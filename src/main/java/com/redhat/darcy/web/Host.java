@@ -17,8 +17,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-public interface BrowserFactory {
-    public Browser newBrowser();
+public class Host {
+    
 }

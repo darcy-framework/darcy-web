@@ -17,14 +17,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-import com.redhat.uiautotool.ui.View;
+import com.redhat.darcy.ui.View;
 
-public interface Browser {
-    <T extends View> T open(Url<T> url);
-    <T extends View> T open(String url, T destination);
-    String getCurrentUrl();
-    String getTitle();
-    void close();
+public interface Url<T extends View> {
+    String url();
+    
+    T forView();
 }

@@ -17,10 +17,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-import com.redhat.uiautotool.ui.View;
-import com.redhat.uiautotool.ui.ViewContext;
+import com.redhat.darcy.ui.View;
+import com.redhat.darcy.ui.ViewContext;
 
 public abstract class BrowserContext implements Browser, ViewContext {
     protected final BrowserManager manager;

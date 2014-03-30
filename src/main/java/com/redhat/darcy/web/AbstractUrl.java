@@ -17,12 +17,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-import com.redhat.uiautotool.ui.View;
+import com.redhat.darcy.ui.View;
 
-public interface Url<T extends View> {
-    String url();
+public abstract class AbstractUrl<T extends View> implements Url<T> {
+    private T destination;
     
-    T forView();
+    public AbstractUrl(T destination) {
+        this.destination = destination;
+    }
+    
+    @Override
+    public T forView() {
+        return destination;
+    }
+    
 }

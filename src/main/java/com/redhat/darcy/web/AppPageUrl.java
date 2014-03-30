@@ -17,8 +17,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-public class Host {
+import com.redhat.darcy.ui.View;
+
+public class AppPageUrl<T extends View> implements Url<T> {
+    private final String app;
+    private final String path;
+    private final T destination;
     
+    public AppPageUrl(String app, String path, T destination) {
+        this.app = app;
+        this.path = path;
+        this.destination = destination;
+    }
+    
+    @Override
+    public String url() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public T forView() {
+        return destination;
+    }
 }

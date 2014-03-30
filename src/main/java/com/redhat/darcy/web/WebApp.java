@@ -17,10 +17,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-public interface BrowserManager {
-    void open(String url, Browser me);
-    String getCurrentUrl(Browser me);
-    void close(Browser me);
+public class WebApp {
+    private String host;
+    private String path;
 }

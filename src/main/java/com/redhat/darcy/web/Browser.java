@@ -17,9 +17,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.uiautotool.web;
+package com.redhat.darcy.web;
 
-public class WebApp {
-    private String host;
-    private String path;
+import com.redhat.darcy.ui.View;
+
+public interface Browser {
+    <T extends View> T open(Url<T> url);
+    <T extends View> T open(String url, T destination);
+    String getCurrentUrl();
+    String getTitle();
+    void close();
 }
