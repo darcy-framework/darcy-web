@@ -19,6 +19,9 @@
 
 package com.redhat.darcy.web;
 
+import static com.redhat.synq.Synq.after;
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 import com.redhat.darcy.ui.View;
 import com.redhat.darcy.ui.ViewContext;
 
@@ -29,18 +32,16 @@ public abstract class BrowserContext implements Browser, ViewContext {
         this.manager = manager;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends View> T open(Url<T> url) {
-        manager.open(url.url(), this);
-        return (T) url.forView().setContext(this);
+        return after(() -> manager.open(url.url(), this))
+                .expect(transition().to(url.destination()))
+                .waitUpTo(1, MINUTES);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends View> T open(String url, T destination) {
-        manager.open(url, this);
-        return (T) destination.setContext(this);
+        return open(new StaticUrl<T>(url, destination));
     }
 
     @Override

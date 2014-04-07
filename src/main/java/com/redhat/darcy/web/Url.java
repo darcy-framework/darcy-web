@@ -24,5 +24,5 @@ import com.redhat.darcy.ui.View;
 public interface Url<T extends View> {
     String url();
     
-    T forView();
+    T destination();
 }

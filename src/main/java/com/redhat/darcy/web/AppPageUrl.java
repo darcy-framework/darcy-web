@@ -39,7 +39,7 @@ public class AppPageUrl<T extends View> implements Url<T> {
     }
     
     @Override
-    public T forView() {
+    public T destination() {
         return destination;
     }
 }

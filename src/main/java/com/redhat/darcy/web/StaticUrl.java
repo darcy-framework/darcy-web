@@ -36,7 +36,7 @@ public class StaticUrl<T extends View> implements Url<T> {
     }
     
     @Override
-    public T forView() {
+    public T destination() {
         return view;
     }
     
