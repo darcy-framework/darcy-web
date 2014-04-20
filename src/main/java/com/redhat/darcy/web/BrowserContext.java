@@ -26,7 +26,7 @@ import com.redhat.darcy.ui.View;
 import com.redhat.darcy.ui.ViewContext;
 
 public abstract class BrowserContext implements Browser, ViewContext {
-    protected final BrowserManager manager;
+    private final BrowserManager manager;
     
     public BrowserContext(BrowserManager manager) {
         this.manager = manager;
