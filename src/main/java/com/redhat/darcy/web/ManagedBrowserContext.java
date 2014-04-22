@@ -54,12 +54,42 @@ public abstract class ManagedBrowserContext implements BrowserContext {
 
     @Override
     public String getTitle() {
-        // TODO Auto-generated method stub
-        return null;
+        return manager.getTitle(this);
+    }
+    
+    @Override
+    public String getSource() {
+        return manager.getSource(this);
+    }
+
+    @Override
+    public <T extends View> T back(T destination) {
+        return after(() -> manager.back(this))
+                .expect(transition().to(destination))
+                .waitUpTo(1, MINUTES);
+    }
+
+    @Override
+    public <T extends View> T forward(T destination) {
+        return after(() -> manager.forward(this))
+                .expect(transition().to(destination))
+                .waitUpTo(1, MINUTES);
+    }
+
+    @Override
+    public <T extends View> T refresh(T destination) {
+        return after(() -> manager.refresh(this))
+                .expect(transition().to(destination))
+                .waitUpTo(1, MINUTES);
     }
 
     @Override
     public void close() {
         manager.close(this);
+    }
+    
+    @Override
+    public void closeAll() {
+        manager.closeAll();
     }
 }

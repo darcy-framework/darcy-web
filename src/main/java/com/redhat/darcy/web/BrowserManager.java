@@ -22,5 +22,11 @@ package com.redhat.darcy.web;
 public interface BrowserManager {
     void open(String url, Browser me);
     String getCurrentUrl(Browser me);
+    String getTitle(Browser me);
+    String getSource(Browser me);
+    void back(Browser me);
+    void forward(Browser me);
+    void refresh(Browser me);
     void close(Browser me);
+    void closeAll();
 }

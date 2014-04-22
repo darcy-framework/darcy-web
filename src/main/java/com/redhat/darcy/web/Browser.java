@@ -26,5 +26,10 @@ public interface Browser {
     <T extends View> T open(String url, T destination);
     String getCurrentUrl();
     String getTitle();
+    String getSource();
+    <T extends View> T back(T destination);
+    <T extends View> T forward(T destination);
+    <T extends View> T refresh(T destination);
     void close();
+    void closeAll();
 }
