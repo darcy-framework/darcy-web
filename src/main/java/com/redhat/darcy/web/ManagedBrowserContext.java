@@ -25,10 +25,14 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import com.redhat.darcy.ui.View;
 import com.redhat.darcy.ui.ViewContext;
 
-public abstract class BrowserContext implements Browser, ViewContext {
+/**
+ * Useful for implementations that require many windows to report to one underlying "master" object,
+ * the "manager."
+ */
+public abstract class ManagedBrowserContext implements Browser, ViewContext {
     private final BrowserManager manager;
     
-    public BrowserContext(BrowserManager manager) {
+    public ManagedBrowserContext(BrowserManager manager) {
         this.manager = manager;
     }
 
