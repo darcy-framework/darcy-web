@@ -23,13 +23,12 @@ import static com.redhat.synq.Synq.after;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 import com.redhat.darcy.ui.View;
-import com.redhat.darcy.ui.ViewContext;
 
 /**
  * Useful for implementations that require many windows to report to one underlying "master" object,
  * the "manager."
  */
-public abstract class ManagedBrowserContext implements Browser, ViewContext {
+public abstract class ManagedBrowserContext implements BrowserContext {
     private final BrowserManager manager;
     
     public ManagedBrowserContext(BrowserManager manager) {
