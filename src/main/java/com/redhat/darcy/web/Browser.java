@@ -19,6 +19,7 @@
 
 package com.redhat.darcy.web;
 
+import com.redhat.darcy.ui.Locator;
 import com.redhat.darcy.ui.View;
 
 public interface Browser {
@@ -30,6 +31,7 @@ public interface Browser {
     <T extends View> T back(T destination);
     <T extends View> T forward(T destination);
     <T extends View> T refresh(T destination);
+    FrameContext frame(Locator locator);
     void close();
     void closeAll();
 }
