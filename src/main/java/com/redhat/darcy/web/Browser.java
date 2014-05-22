@@ -32,6 +32,7 @@ public interface Browser {
     <T extends View> T forward(T destination);
     <T extends View> T refresh(T destination);
     FrameContext frame(Locator locator);
+    Alert alert();
     void close();
     void closeAll();
 }
