@@ -20,7 +20,7 @@
 package com.redhat.darcy.web;
 
 public class UrlStringBuilder {
-    private String host;
+    private String host = "";
     private String path = "";
     
     public UrlStringBuilder withHost(String host) {

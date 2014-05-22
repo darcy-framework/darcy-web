@@ -40,4 +40,8 @@ public class StaticUrl<T extends View> implements Url<T> {
         return view;
     }
     
+    @Override
+    public String toString() {
+        return "StaticUrl: {url: " + url + ", destination: " + view.toString() + "}";
+    }
 }
