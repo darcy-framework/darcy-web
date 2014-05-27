@@ -22,6 +22,9 @@ package com.redhat.darcy.web;
 import com.redhat.darcy.ui.ContextSelection;
 import com.redhat.darcy.ui.Locator;
 
+/**
+ * Extends the default {@link ContextSelection} interface with some web-specific defaults.
+ */
 public interface WebContextSelection extends ContextSelection {
     default BrowserContext browser(Locator locator) {
         return ofType(BrowserContext.class, locator);

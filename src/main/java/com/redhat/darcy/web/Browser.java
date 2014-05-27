@@ -22,10 +22,14 @@ package com.redhat.darcy.web;
 import com.redhat.darcy.ui.Locator;
 import com.redhat.darcy.ui.View;
 
+/**
+ * Abstracts all of the interactions a user might make with a browser.
+ */
 public interface Browser {
     /**
-     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded, 
-     * as defined by the {@link Url} parameter.
+     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded, as
+     * defined by the {@link Url} parameter.
+     * 
      * @param url
      * @return
      */
@@ -33,6 +37,7 @@ public interface Browser {
     
     /**
      * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded.
+     * 
      * @param url
      * @param destination
      * @return
@@ -53,22 +58,53 @@ public interface Browser {
     
     /**
      * The HTML source code of the current page present in the Browser window.
+     * 
      * @return
      */
     String getSource();
     
     /**
-     * Navigates "back" in the Browser history, and awaits for some expected destination {@link View}
-     * to load as a result.
+     * Navigates "back" in the Browser history, and awaits for some expected destination
+     * {@link View} to load as a result.
+     * 
      * @param destination
      * @return
      */
     <T extends View> T back(T destination);
+    
+    /**
+     * Navigates "forward" in the Browser history, and awaits for some expected destination
+     * {@link View} to load as a result.
+     * 
+     * @param destination
+     * @return
+     */
     <T extends View> T forward(T destination);
+    
+    /**
+     * Simulates clicking the "refresh" button within a browser, and waits for some expected 
+     * destination {@link View} to load as a result.
+     * 
+     * @param destination
+     * @return
+     */
     <T extends View> T refresh(T destination);
+    
     @Deprecated
     FrameContext frame(Locator locator);
+    
+    /**
+     * Returns a reference to a Javascript alert window. Will not throw an exception immediately if
+     * one is open, but attempting to interact with one where none is present <em>will</em> throw
+     * an exception.
+     * 
+     * @return
+     * @see Alert
+     * @see Alert#isPresent()
+     */
     Alert alert();
+    
     void close();
+    
     void closeAll();
 }

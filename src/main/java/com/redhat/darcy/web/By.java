@@ -24,6 +24,9 @@ import java.util.List;
 import com.redhat.darcy.ui.Context;
 import com.redhat.darcy.ui.Locator;
 
+/**
+ * Adds some web-specific {@link Locator}s to the default {@link com.redhat.darcy.ui.By} options.
+ */
 public abstract class By extends com.redhat.darcy.ui.By {
     public static Locator cssSelector(String css) {
         return new ByCss(css);

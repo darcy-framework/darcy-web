@@ -19,7 +19,14 @@
 
 package com.redhat.darcy.web;
 
+/**
+ * Represents Javascript alert dialogs within a specific browser.
+ */
 public interface Alert {
+    /**
+     * Safely ask if there is an Alert dialog present.
+     * @return
+     */
     boolean isPresent();
     void accept();
     void dismiss();

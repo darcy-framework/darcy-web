@@ -19,6 +19,9 @@
 
 package com.redhat.darcy.web;
 
+/**
+ * Abstracts the basic functionality available for a frame or iFrame in a given browser.
+ */
 public interface Frame {
     String getCurrentUrl();
     String getSource();

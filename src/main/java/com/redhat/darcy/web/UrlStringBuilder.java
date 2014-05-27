@@ -19,6 +19,9 @@
 
 package com.redhat.darcy.web;
 
+/**
+ * Builds normalized, valid URL strings given a host and potentially several appended paths.
+ */
 public class UrlStringBuilder {
     private String host = "";
     private String path = "";
