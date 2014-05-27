@@ -19,11 +19,15 @@
 
 package com.redhat.darcy.web;
 
-import com.redhat.darcy.ui.ViewContext;
+import com.redhat.darcy.ui.ContextSelection;
+import com.redhat.darcy.ui.Locator;
 
-public interface BrowserContext extends ViewContext, Browser {
-    @Override
-    default WebContextSelection context() {
-        return new DefaultWebContextSelection(this);
+public interface WebContextSelection extends ContextSelection {
+    default BrowserContext browser(Locator locator) {
+        return ofType(BrowserContext.class, locator);
+    }
+    
+    default FrameContext frame(Locator locator) {
+        return ofType(FrameContext.class, locator);
     }
 }

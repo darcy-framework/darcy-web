@@ -19,11 +19,14 @@
 
 package com.redhat.darcy.web;
 
-import com.redhat.darcy.ui.ViewContext;
+import com.redhat.darcy.ui.DefaultContextSelection;
+import com.redhat.darcy.ui.ParentContext;
 
-public interface BrowserContext extends ViewContext, Browser {
-    @Override
-    default WebContextSelection context() {
-        return new DefaultWebContextSelection(this);
+public class DefaultWebContextSelection extends DefaultContextSelection 
+implements WebContextSelection {
+
+    public DefaultWebContextSelection(ParentContext parentContext) {
+        super(parentContext);
     }
+    
 }
