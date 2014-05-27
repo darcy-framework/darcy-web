@@ -23,14 +23,50 @@ import com.redhat.darcy.ui.Locator;
 import com.redhat.darcy.ui.View;
 
 public interface Browser {
+    /**
+     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded, 
+     * as defined by the {@link Url} parameter.
+     * @param url
+     * @return
+     */
     <T extends View> T open(Url<T> url);
+    
+    /**
+     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded.
+     * @param url
+     * @param destination
+     * @return
+     */
     <T extends View> T open(String url, T destination);
+    
+    /**
+     * 
+     * @return the current URL string this Browser window is pointing to.
+     */
     String getCurrentUrl();
+    
+    /**
+     * 
+     * @return the title of the current page present in the Browser window.
+     */
     String getTitle();
+    
+    /**
+     * The HTML source code of the current page present in the Browser window.
+     * @return
+     */
     String getSource();
+    
+    /**
+     * Navigates "back" in the Browser history, and awaits for some expected destination {@link View}
+     * to load as a result.
+     * @param destination
+     * @return
+     */
     <T extends View> T back(T destination);
     <T extends View> T forward(T destination);
     <T extends View> T refresh(T destination);
+    @Deprecated
     FrameContext frame(Locator locator);
     Alert alert();
     void close();
