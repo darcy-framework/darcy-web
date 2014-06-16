@@ -19,8 +19,10 @@
 
 package com.redhat.darcy.web;
 
-import com.redhat.darcy.ui.ViewContext;
+import com.redhat.darcy.ui.ElementContext;
+import com.redhat.darcy.ui.ParentContext;
 
-public interface FrameContext extends Frame, ViewContext {
-    
+public interface WebContext extends ElementContext, ParentContext {
+    @Override
+    WebSelection find();
 }

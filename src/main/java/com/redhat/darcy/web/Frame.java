@@ -22,7 +22,12 @@ package com.redhat.darcy.web;
 /**
  * Abstracts the basic functionality available for a frame or iFrame in a given browser.
  */
-public interface Frame {
+public interface Frame extends WebContext {
     String getCurrentUrl();
     String getSource();
+
+    @Override
+    default WebSelection find() {
+        return new DefaultWebSelection(this);
+    }
 }

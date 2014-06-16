@@ -19,14 +19,19 @@
 
 package com.redhat.darcy.web;
 
-import com.redhat.darcy.ui.DefaultContextSelection;
-import com.redhat.darcy.ui.ParentContext;
+import com.redhat.darcy.ui.ContextSelection;
+import com.redhat.darcy.ui.ElementSelection;
+import com.redhat.darcy.ui.Locator;
 
-public class DefaultWebContextSelection extends DefaultContextSelection 
-implements WebContextSelection {
-
-    public DefaultWebContextSelection(ParentContext parentContext) {
-        super(parentContext);
+/**
+ * Extends the default {@link ContextSelection} interface with some web-specific defaults.
+ */
+public interface WebSelection extends ContextSelection, ElementSelection {
+    default Browser browser(Locator locator) {
+        return contextOfType(Browser.class, locator);
     }
     
+    default Frame frame(Locator locator) {
+        return contextOfType(Frame.class, locator);
+    }
 }

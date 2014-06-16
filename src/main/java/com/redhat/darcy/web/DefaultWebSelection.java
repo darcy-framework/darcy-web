@@ -19,11 +19,29 @@
 
 package com.redhat.darcy.web;
 
-import com.redhat.darcy.ui.ViewContext;
+import com.redhat.darcy.ui.Context;
+import com.redhat.darcy.ui.Locator;
+import com.redhat.darcy.ui.ProxyElementSelection;
 
-public interface BrowserContext extends ViewContext, Browser {
+import java.util.List;
+
+public class DefaultWebSelection extends ProxyElementSelection
+        implements WebSelection {
+    private final WebContext webContext;
+
+    public DefaultWebSelection(WebContext webContext) {
+        super(webContext);
+
+        this.webContext = webContext;
+    }
+
     @Override
-    default WebContextSelection context() {
-        return new DefaultWebContextSelection(this);
+    public <T extends Context> T contextOfType(Class<T> contextType, Locator locator) {
+        return locator.find(contextType, webContext);
+    }
+
+    @Override
+    public <T extends Context> List<T> contextsOfType(Class<T> contextType, Locator locator) {
+        return locator.findAll(contextType, webContext);
     }
 }
