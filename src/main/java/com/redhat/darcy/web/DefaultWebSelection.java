@@ -20,12 +20,12 @@
 package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.Context;
+import com.redhat.darcy.ui.DefaultElementSelection;
 import com.redhat.darcy.ui.Locator;
-import com.redhat.darcy.ui.ProxyElementSelection;
 
 import java.util.List;
 
-public class DefaultWebSelection extends ProxyElementSelection
+public class DefaultWebSelection extends DefaultElementSelection
         implements WebSelection {
     private final WebContext webContext;
 
