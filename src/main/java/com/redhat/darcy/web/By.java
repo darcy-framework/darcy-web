@@ -47,6 +47,11 @@ public abstract class By extends com.redhat.darcy.ui.By {
         public <T> List<T> findAll(Class<T> type, Context context) {
             return ((FindsByCssSelector) context).findAllByCssSelector(type, css);
         }
+
+        @Override
+        public <T> T find(Class<T> type, Context context) {
+            return ((FindsByCssSelector) context).findByCssSelector(type, css);
+        }
         
     }
     
@@ -60,6 +65,11 @@ public abstract class By extends com.redhat.darcy.ui.By {
         @Override
         public <T> List<T> findAll(Class<T> type, Context context) {
             return ((FindsByHtmlTag) context).findAllByHtmlTag(type, tag);
+        }
+
+        @Override
+        public <T> T find(Class<T> type, Context context) {
+            return ((FindsByHtmlTag) context).findByHtmlTag(type, tag);
         }
         
     }
