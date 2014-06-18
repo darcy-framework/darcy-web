@@ -25,13 +25,5 @@ import java.util.List;
 
 public interface FindsByHtmlTag {
     <T> List<T> findAllByHtmlTag(Class<T> type, String tag);
-    default <T> T findByHtmlTag(Class<T> type, String tag) {
-        List<T> found = findAllByHtmlTag(type, tag);
-        
-        if (found.isEmpty()) {
-            throw new NotFoundException(type, By.htmlTag(tag));
-        }
-        
-        return findAllByHtmlTag(type, tag).get(0);
-    }
+    <T> T findByHtmlTag(Class<T> type, String tag);
 }

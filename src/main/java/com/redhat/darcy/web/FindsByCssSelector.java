@@ -25,13 +25,5 @@ import java.util.List;
 
 public interface FindsByCssSelector {
     <T> List<T> findAllByCssSelector(Class<T> type, String css);
-    default <T> T findByCssSelector(Class<T> type, String css) {
-        List<T> found = findAllByCssSelector(type, css);
-        
-        if (found.isEmpty()) {
-            throw new NotFoundException(type, By.cssSelector(css));
-        }
-        
-        return findAllByCssSelector(type, css).get(0);
-    }
+    <T> T findByCssSelector(Class<T> type, String css);
 }
