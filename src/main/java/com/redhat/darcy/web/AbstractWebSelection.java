@@ -25,11 +25,11 @@ import com.redhat.darcy.ui.Locator;
 
 import java.util.List;
 
-public class DefaultWebSelection extends DefaultElementSelection
+public abstract class AbstractWebSelection extends DefaultElementSelection
         implements WebSelection {
     private final WebContext webContext;
 
-    public DefaultWebSelection(WebContext webContext) {
+    public AbstractWebSelection(WebContext webContext) {
         super(webContext);
 
         this.webContext = webContext;
@@ -44,4 +44,7 @@ public class DefaultWebSelection extends DefaultElementSelection
     public <T extends Context> List<T> contextsOfType(Class<T> contextType, Locator locator) {
         return locator.findAll(contextType, webContext);
     }
+
+    @Override
+    public abstract Alert alert();
 }

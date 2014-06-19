@@ -30,8 +30,19 @@ public interface WebSelection extends ContextSelection, ElementSelection {
     default Browser browser(Locator locator) {
         return contextOfType(Browser.class, locator);
     }
-    
+
     default Frame frame(Locator locator) {
         return contextOfType(Frame.class, locator);
     }
+
+    /**
+     * Returns a reference to a Javascript alert window. Will not throw an exception immediately if
+     * one is not open, but attempting to interact with one where none is present <em>will</em>
+     * throw an exception. Because there can only be one alert within one window at a time,
+     * providing a {@link com.redhat.darcy.ui.Locator} is unnecessary.
+     *
+     * @see Alert
+     * @see Alert#isPresent()
+     */
+    Alert alert();
 }

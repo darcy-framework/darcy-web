@@ -29,7 +29,5 @@ public interface Frame extends WebContext, Findable {
     String getSource();
 
     @Override
-    default WebSelection find() {
-        return new DefaultWebSelection(this);
-    }
+    WebSelection find();
 }

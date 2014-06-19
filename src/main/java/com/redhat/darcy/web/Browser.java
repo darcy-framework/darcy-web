@@ -88,23 +88,10 @@ public interface Browser extends WebContext, Findable {
      */
     <T extends View> T refresh(T destination);
 
-    /**
-     * Returns a reference to a Javascript alert window. Will not throw an exception immediately if
-     * one is not open, but attempting to interact with one where none is present <em>will</em>
-     * throw an exception.
-     *
-     * @return
-     * @see Alert
-     * @see Alert#isPresent()
-     */
-    Alert alert();
-
     void close();
 
     void closeAll();
 
     @Override
-    default WebSelection find() {
-        return new DefaultWebSelection(this);
-    }
+    WebSelection find();
 }
