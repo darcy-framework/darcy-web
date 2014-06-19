@@ -19,15 +19,12 @@
 
 package com.redhat.darcy.web;
 
+import com.redhat.darcy.ui.elements.Findable;
+
 /**
  * Represents Javascript alert dialogs within a specific browser.
  */
-public interface Alert {
-    /**
-     * Safely ask if there is an Alert dialog present.
-     * @return
-     */
-    boolean isPresent();
+public interface Alert extends Findable {
     void accept();
     void dismiss();
     void sendKeys(String text);

@@ -20,11 +20,12 @@
 package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.View;
+import com.redhat.darcy.ui.elements.Findable;
 
 /**
  * Abstracts all of the interactions a user might make with a browser.
  */
-public interface Browser extends WebContext {
+public interface Browser extends WebContext, Findable {
     /**
      * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded, as
      * defined by the {@link Url} parameter.
