@@ -1,5 +1,6 @@
 darcy-web
 =========
+[![Build Status](https://travis-ci.org/darcy-framework/darcy-web.svg?branch=master)](https://travis-ci.org/darcy-framework/darcy-web)
 
 Extension to [darcy-ui][1] that expands the DSL to support interaction with browsers and web applications.
 
