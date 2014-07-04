@@ -21,7 +21,7 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.View;
 
-public class StaticUrl<T extends View> implements Url<T> {
+public class StaticUrl<T extends View> implements ViewUrl<T> {
     private final String url;
     private final T view;
     

@@ -25,7 +25,7 @@ import com.redhat.darcy.ui.View;
  * A URL string matched with some expected destination {@link View}.
  * @param <T>
  */
-public interface Url<T extends View> {
+public interface ViewUrl<T extends View> {
     String url();
     T destination();
 }

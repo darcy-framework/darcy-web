@@ -21,7 +21,7 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.View;
 
-public abstract class AbstractUrl<T extends View> implements Url<T> {
+public abstract class AbstractUrl<T extends View> implements ViewUrl<T> {
     private T destination;
     
     public AbstractUrl(T destination) {
