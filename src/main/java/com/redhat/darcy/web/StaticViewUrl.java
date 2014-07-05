@@ -21,11 +21,13 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.View;
 
-public class StaticUrl<T extends View> implements ViewUrl<T> {
+import java.util.function.Supplier;
+
+public class StaticViewUrl<T extends View> implements ViewUrl<T> {
     private final String url;
-    private final T view;
+    private final Supplier<T> view;
     
-    public StaticUrl(String url, T view) {
+    public StaticViewUrl(String url, Supplier<T> view) {
         this.url = url;
         this.view = view;
     }
@@ -37,7 +39,7 @@ public class StaticUrl<T extends View> implements ViewUrl<T> {
     
     @Override
     public T destination() {
-        return view;
+        return view.get();
     }
     
     @Override
