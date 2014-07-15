@@ -19,7 +19,8 @@
 
 package com.redhat.darcy.web;
 
-import com.redhat.darcy.ui.View;
+import com.redhat.darcy.ui.api.View;
+import com.redhat.darcy.web.api.ViewUrl;
 
 import java.util.function.Supplier;
 

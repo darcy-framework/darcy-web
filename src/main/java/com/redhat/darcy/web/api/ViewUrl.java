@@ -17,16 +17,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.api;
 
-import com.redhat.darcy.ui.elements.Findable;
+import com.redhat.darcy.ui.api.View;
 
 /**
- * Represents Javascript alert dialogs within a specific browser.
+ * A URL string matched with some expected destination {@link View}.
+ * @param <T>
  */
-public interface Alert extends Findable {
-    void accept();
-    void dismiss();
-    void sendKeys(String text);
-    String readText();
+public interface ViewUrl<T extends View> {
+    String url();
+    T destination();
 }

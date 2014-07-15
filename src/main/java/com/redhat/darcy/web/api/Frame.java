@@ -17,12 +17,17 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.api;
 
-import com.redhat.darcy.ui.ElementContext;
-import com.redhat.darcy.ui.ParentContext;
+import com.redhat.darcy.ui.api.elements.Findable;
 
-public interface WebContext extends ElementContext, ParentContext {
+/**
+ * Abstracts the basic functionality available for a frame or iFrame in a given browser.
+ */
+public interface Frame extends WebContext, Findable {
+    String getCurrentUrl();
+    String getSource();
+
     @Override
     WebSelection find();
 }

@@ -17,11 +17,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.internal;
 
-import com.redhat.darcy.ui.Context;
-import com.redhat.darcy.ui.DefaultElementSelection;
-import com.redhat.darcy.ui.Locator;
+import com.redhat.darcy.ui.api.Context;
+import com.redhat.darcy.ui.internal.DefaultElementSelection;
+import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.web.api.Alert;
+import com.redhat.darcy.web.api.WebContext;
+import com.redhat.darcy.web.api.WebSelection;
 
 import java.util.List;
 

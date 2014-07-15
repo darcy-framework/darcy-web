@@ -17,8 +17,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.api;
 
-public interface BrowserFactory {
-    public Browser newBrowser();
+import com.redhat.darcy.ui.api.elements.Findable;
+
+/**
+ * Represents Javascript alert dialogs within a specific browser.
+ */
+public interface Alert extends Findable {
+    void accept();
+    void dismiss();
+    void sendKeys(String text);
+    String readText();
 }

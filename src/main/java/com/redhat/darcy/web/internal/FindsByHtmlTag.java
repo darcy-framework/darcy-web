@@ -17,7 +17,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.internal;
 
 import com.redhat.darcy.ui.NotFoundException;
 

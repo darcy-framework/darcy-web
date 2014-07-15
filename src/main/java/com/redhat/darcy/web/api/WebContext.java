@@ -17,15 +17,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.api;
 
-import com.redhat.darcy.ui.View;
+import com.redhat.darcy.ui.api.ElementContext;
+import com.redhat.darcy.ui.api.ParentContext;
 
-/**
- * A URL string matched with some expected destination {@link View}.
- * @param <T>
- */
-public interface ViewUrl<T extends View> {
-    String url();
-    T destination();
+public interface WebContext extends ElementContext, ParentContext {
+    @Override
+    WebSelection find();
 }

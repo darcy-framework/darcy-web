@@ -21,8 +21,10 @@ package com.redhat.darcy.web;
 
 import java.util.List;
 
-import com.redhat.darcy.ui.Context;
-import com.redhat.darcy.ui.Locator;
+import com.redhat.darcy.ui.api.Context;
+import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.web.internal.FindsByCssSelector;
+import com.redhat.darcy.web.internal.FindsByHtmlTag;
 
 /**
  * Adds some web-specific {@link Locator}s to the default {@link com.redhat.darcy.ui.By} options.

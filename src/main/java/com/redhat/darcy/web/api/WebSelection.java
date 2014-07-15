@@ -17,11 +17,11 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.api;
 
-import com.redhat.darcy.ui.ContextSelection;
-import com.redhat.darcy.ui.ElementSelection;
-import com.redhat.darcy.ui.Locator;
+import com.redhat.darcy.ui.api.ContextSelection;
+import com.redhat.darcy.ui.api.ElementSelection;
+import com.redhat.darcy.ui.api.Locator;
 
 /**
  * Extends the default {@link ContextSelection} interface with some web-specific defaults.
@@ -39,7 +39,7 @@ public interface WebSelection extends ContextSelection, ElementSelection {
      * Returns a reference to a Javascript alert window. Will not throw an exception immediately if
      * one is not open, but attempting to interact with one where none is present <em>will</em>
      * throw an exception. Because there can only be one alert within one window at a time,
-     * providing a {@link com.redhat.darcy.ui.Locator} is unnecessary.
+     * providing a {@link com.redhat.darcy.ui.api.Locator} is unnecessary.
      *
      * @see Alert
      * @see Alert#isPresent()

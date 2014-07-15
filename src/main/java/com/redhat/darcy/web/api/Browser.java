@@ -17,17 +17,17 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.redhat.darcy.web;
+package com.redhat.darcy.web.api;
 
-import com.redhat.darcy.ui.View;
-import com.redhat.darcy.ui.elements.Findable;
+import com.redhat.darcy.ui.api.View;
+import com.redhat.darcy.ui.api.elements.Findable;
 
 /**
  * Abstracts all of the interactions a user might make with a browser.
  */
 public interface Browser extends WebContext, Findable {
     /**
-     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded, as
+     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.api.View} is loaded, as
      * defined by the {@link ViewUrl} parameter.
      *
      * @param viewUrl
@@ -36,7 +36,7 @@ public interface Browser extends WebContext, Findable {
     <T extends View> T open(ViewUrl<T> viewUrl);
 
     /**
-     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.View} is loaded.
+     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.api.View} is loaded.
      *
      * @param url
      * @param destination
