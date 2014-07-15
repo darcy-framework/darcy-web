@@ -20,8 +20,8 @@
 package com.redhat.darcy.web.internal;
 
 import com.redhat.darcy.ui.api.Context;
-import com.redhat.darcy.ui.internal.DefaultElementSelection;
 import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.ui.internal.DefaultElementSelection;
 import com.redhat.darcy.web.api.Alert;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.WebSelection;

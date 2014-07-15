@@ -19,8 +19,6 @@
 
 package com.redhat.darcy.web.internal;
 
-import com.redhat.darcy.ui.NotFoundException;
-
 import java.util.List;
 
 public interface FindsByCssSelector {
