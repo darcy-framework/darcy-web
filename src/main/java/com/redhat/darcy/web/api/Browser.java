@@ -33,7 +33,9 @@ public interface Browser extends WebContext, Findable {
      * @param viewUrl
      * @return
      */
-    <T extends View> T open(ViewUrl<T> viewUrl);
+    default <T extends View> T open(ViewUrl<T> viewUrl) {
+        return open(viewUrl.url(), viewUrl.destination());
+    }
 
     /**
      * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.api.View} is loaded.
