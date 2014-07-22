@@ -21,7 +21,7 @@ package com.redhat.darcy.web.internal;
 
 import java.util.List;
 
-public interface FindsByCssSelector {
-    <T> List<T> findAllByCssSelector(Class<T> type, String css);
-    <T> T findByCssSelector(Class<T> type, String css);
+public interface FindsByCss {
+    <T> List<T> findAllByCss(Class<T> type, String css);
+    <T> T findByCss(Class<T> type, String css);
 }

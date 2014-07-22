@@ -21,7 +21,7 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.api.Context;
 import com.redhat.darcy.ui.api.Locator;
-import com.redhat.darcy.web.internal.FindsByCssSelector;
+import com.redhat.darcy.web.internal.FindsByCss;
 import com.redhat.darcy.web.internal.FindsByHtmlTag;
 
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
  * Adds some web-specific {@link Locator}s to the default {@link com.redhat.darcy.ui.By} options.
  */
 public abstract class By extends com.redhat.darcy.ui.By {
-    public static Locator cssSelector(String css) {
+    public static Locator css(String css) {
         return new ByCss(css);
     }
     
@@ -47,12 +47,12 @@ public abstract class By extends com.redhat.darcy.ui.By {
 
         @Override
         public <T> List<T> findAll(Class<T> type, Context context) {
-            return ((FindsByCssSelector) context).findAllByCssSelector(type, css);
+            return ((FindsByCss) context).findAllByCss(type, css);
         }
 
         @Override
         public <T> T find(Class<T> type, Context context) {
-            return ((FindsByCssSelector) context).findByCssSelector(type, css);
+            return ((FindsByCss) context).findByCss(type, css);
         }
         
     }
