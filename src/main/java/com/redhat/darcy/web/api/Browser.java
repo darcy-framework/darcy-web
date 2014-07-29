@@ -21,7 +21,7 @@ package com.redhat.darcy.web.api;
 
 import com.redhat.darcy.ui.api.View;
 import com.redhat.darcy.ui.api.elements.Findable;
-
+import com.redhat.synq.Event;
 /**
  * Abstracts all of the interactions a user might make with a browser.
  */
@@ -33,7 +33,7 @@ public interface Browser extends WebContext, Findable {
      * @param viewUrl
      * @return
      */
-    default <T extends View> T open(ViewUrl<T> viewUrl) {
+    default <T extends View> Event<T> open(ViewUrl<T> viewUrl) {
         return open(viewUrl.url(), viewUrl.destination());
     }
 
@@ -44,7 +44,7 @@ public interface Browser extends WebContext, Findable {
      * @param destination
      * @return
      */
-    <T extends View> T open(String url, T destination);
+    <T extends View> Event<T> open(String url, T destination);
 
     /**
      * @return the current URL string this Browser window is pointing to.
