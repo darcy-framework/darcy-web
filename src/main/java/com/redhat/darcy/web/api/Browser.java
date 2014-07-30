@@ -70,7 +70,7 @@ public interface Browser extends WebContext, Findable {
      * @param destination
      * @return
      */
-    <T extends View> T back(T destination);
+    <T extends View> Event<T> back(T destination);
 
     /**
      * Navigates "forward" in the Browser history, and awaits for some expected destination {@link
@@ -79,7 +79,7 @@ public interface Browser extends WebContext, Findable {
      * @param destination
      * @return
      */
-    <T extends View> T forward(T destination);
+    <T extends View> Event<T> forward(T destination);
 
     /**
      * Simulates clicking the "refresh" button within a browser, and waits for some expected
@@ -88,7 +88,7 @@ public interface Browser extends WebContext, Findable {
      * @param destination
      * @return
      */
-    <T extends View> T refresh(T destination);
+    <T extends View> Event<T> refresh(T destination);
 
     void close();
 
