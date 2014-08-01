@@ -27,22 +27,43 @@ import com.redhat.synq.Event;
  */
 public interface Browser extends WebContext, Findable {
     /**
-     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.api.View} is loaded, as
-     * defined by the {@link ViewUrl} parameter.
+     * Constructs an {@link com.redhat.synq.Event} that will opens the URL and block until the
+     * associated {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl}
+     * parameter. Note that merely calling this function does not actually <em>open</em> the URL and
+     * wait. You have to call {@link Event#waitUpTo(java.time.Duration)}, the core terminal
+     * operation in the Event DSL.
+     * <p>
+     * Because an {@link com.redhat.synq.Event} is returned, the event that you ultimately wait for
+     * can be further configured if desired, adding {@link Event#failIf(com.redhat.synq.Event)}
+     * clauses, and the like.
      *
-     * @param viewUrl
-     * @return
+     * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
+     * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
+     * {@link #open(String, com.redhat.darcy.ui.api.View)}.
+     * @return An {@link com.redhat.synq.Event} that can be further configured and awaited. This
+     * event is set up to expect a {@link com.redhat.darcy.ui.api.TransitionEvent} to occur to the
+     * view specified in {@code viewUrl}.
      */
     default <T extends View> Event<T> open(ViewUrl<T> viewUrl) {
         return open(viewUrl.url(), viewUrl.destination());
     }
 
     /**
-     * Opens the URL and blocks until the associated {@link com.redhat.darcy.ui.api.View} is loaded.
+     * Constructs an event that will opens the URL and block until the associated
+     * {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl} parameter.
+     * Note that merely calling this function does not actually <em>open</em> the URL and wait. You
+     * have to call {@link Event#waitUpTo(java.time.Duration)}, the core terminal operation in
+     * the Event DSL.
+     * <p>
+     * Because an {@link com.redhat.synq.Event} is returned, the event that you ultimately wait for
+     * can be further configured if desired, adding {@link Event#failIf(com.redhat.synq.Event)}
+     * clauses, and the like.
      *
-     * @param url
-     * @param destination
-     * @return
+     * @param destination The {@link com.redhat.darcy.ui.api.View} you expect to be loaded after
+     * navigating to the specified url. The returned {@link com.redhat.synq.Event} will be
+     * configured to wait for a {@link com.redhat.darcy.ui.api.TransitionEvent} to occur for this
+     * view.
+     * @return An {@link com.redhat.synq.Event} that can be further configured and awaited.
      */
     <T extends View> Event<T> open(String url, T destination);
 
@@ -57,36 +78,27 @@ public interface Browser extends WebContext, Findable {
     String getTitle();
 
     /**
-     * The HTML source code of the current page present in the Browser window.
-     *
-     * @return
+     * @return The HTML source code of the current page present in the Browser window.
      */
     String getSource();
 
     /**
-     * Navigates "back" in the Browser history, and awaits for some expected destination {@link
-     * View} to load as a result.
-     *
-     * @param destination
-     * @return
+     * Constructs an {@link com.redhat.synq.Event} that navigates "back" in the Browser history,
+     * and awaits for some expected destination {@link com.redhat.darcy.ui.api.View} to load as a
+     * result.
      */
     <T extends View> Event<T> back(T destination);
 
     /**
-     * Navigates "forward" in the Browser history, and awaits for some expected destination {@link
-     * View} to load as a result.
-     *
-     * @param destination
-     * @return
+     * Constructs an {@link com.redhat.synq.Event} that navigates "forward" in the Browser history,
+     * and awaits for some expected destination {@link com.redhat.darcy.ui.api.View} to load as a
+     * result.
      */
     <T extends View> Event<T> forward(T destination);
 
     /**
-     * Simulates clicking the "refresh" button within a browser, and waits for some expected
-     * destination {@link View} to load as a result.
-     *
-     * @param destination
-     * @return
+     * Constructs an {@link com.redhat.synq.Event} that refreshes the browser and awaits for some
+     * expected destination {@link com.redhat.darcy.ui.api.View} to load as a result.
      */
     <T extends View> Event<T> refresh(T destination);
 
