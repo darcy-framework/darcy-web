@@ -1,6 +1,7 @@
 darcy-web
 =========
 [![Build Status](https://travis-ci.org/darcy-framework/darcy-web.svg?branch=master)](https://travis-ci.org/darcy-framework/darcy-web) [![Coverage Status](https://coveralls.io/repos/darcy-framework/darcy-web/badge.png?branch=master)](https://coveralls.io/r/darcy-framework/darcy-web?branch=master)
+[![Stories in Ready](https://badge.waffle.io/darcy-framework/darcy-web.png?label=ready&title=Ready)](https://waffle.io/darcy-framework/darcy-web)
 
 Extension to [darcy-ui][1] that expands the DSL to support interaction with browsers and web applications.
 
