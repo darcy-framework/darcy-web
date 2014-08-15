@@ -22,6 +22,8 @@ package com.redhat.darcy.web.api;
 import com.redhat.darcy.ui.api.ContextSelection;
 import com.redhat.darcy.ui.api.ElementSelection;
 import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.web.api.elements.HtmlButton;
+import com.redhat.darcy.web.api.elements.HtmlTextInput;
 
 /**
  * Extends the default {@link ContextSelection} interface with some web-specific defaults.
@@ -45,4 +47,12 @@ public interface WebSelection extends ContextSelection, ElementSelection {
      * @see Alert#isPresent()
      */
     Alert alert();
+
+    default HtmlTextInput htmlTextInput(Locator locator) {
+        return elementOfType(HtmlTextInput.class, locator);
+    }
+
+    default HtmlButton htmlButton(Locator locator) {
+        return elementOfType(HtmlButton.class, locator);
+    }
 }
