@@ -26,7 +26,7 @@ import java.util.Set;
 
 /**
  * Elements that wrap specific elements in an HTML document are expected to implement this
- * interface, which gives clients API's to access attributes and other HTML specifics about the
+ * interface, which gives clients APIs to access attributes and other HTML specifics about the
  * element.
  */
 public interface HtmlElement extends Element, HasAttributes {
