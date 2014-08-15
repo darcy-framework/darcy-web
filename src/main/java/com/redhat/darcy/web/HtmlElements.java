@@ -21,15 +21,78 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.Elements;
 import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.web.api.elements.HtmlButton;
 import com.redhat.darcy.web.api.elements.HtmlElement;
+import com.redhat.darcy.web.api.elements.HtmlFileSelect;
+import com.redhat.darcy.web.api.elements.HtmlLabel;
+import com.redhat.darcy.web.api.elements.HtmlLink;
+import com.redhat.darcy.web.api.elements.HtmlSelect;
 import com.redhat.darcy.web.api.elements.HtmlTextInput;
 
+import java.util.List;
+
+/**
+ * An extension of {@link com.redhat.darcy.ui.Elements} which provides additional static factories
+ * intended to be used as class fields for HTML element subtypes. Extends
+ * {@link com.redhat.darcy.ui.Elements} so this class may be used in its place if you require HTML
+ * specific APIs.
+ *
+ * @see com.redhat.darcy.ui.Elements
+ */
 public abstract class HtmlElements extends Elements {
     public static HtmlElement htmlElement(Locator locator) {
         return element(HtmlElement.class, locator);
     }
 
+    public static List<HtmlElement> htmlElements(Locator locator) {
+        return elements(HtmlElement.class, locator);
+    }
+
     public static HtmlTextInput htmlTextInput(Locator locator) {
         return element(HtmlTextInput.class, locator);
+    }
+
+    public static List<HtmlTextInput> htmlTextInputs(Locator locator) {
+        return elements(HtmlTextInput.class, locator);
+    }
+
+    public static HtmlButton htmlButton(Locator locator) {
+        return element(HtmlButton.class, locator);
+    }
+
+    public static List<HtmlButton> htmlButtons(Locator locator) {
+        return elements(HtmlButton.class, locator);
+    }
+
+    public static HtmlFileSelect htmlFileSelect(Locator locator) {
+        return element(HtmlFileSelect.class, locator);
+    }
+
+    public static List<HtmlFileSelect> htmlFileSelects(Locator locator) {
+        return elements(HtmlFileSelect.class, locator);
+    }
+
+    public static HtmlLabel htmlLabel(Locator locator) {
+        return element(HtmlLabel.class, locator);
+    }
+
+    public static List<HtmlLabel> htmlLabels(Locator locator) {
+        return elements(HtmlLabel.class, locator);
+    }
+
+    public static HtmlLink htmlLink(Locator locator) {
+        return element(HtmlLink.class, locator);
+    }
+
+    public static List<HtmlLink> htmlLinks(Locator locator) {
+        return elements(HtmlLink.class, locator);
+    }
+
+    public static HtmlSelect htmlSelect(Locator locator) {
+        return element(HtmlSelect.class, locator);
+    }
+
+    public static List<HtmlSelect> htmlSelects(Locator locator) {
+        return elements(HtmlSelect.class, locator);
     }
 }
