@@ -22,12 +22,10 @@ package com.redhat.darcy.web;
 import static com.redhat.darcy.web.HtmlElements.htmlElement;
 
 import com.redhat.darcy.ui.AbstractViewElement;
-import com.redhat.darcy.ui.annotations.Context;
 import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Table;
 import com.redhat.darcy.ui.internal.ViewList;
-import com.redhat.darcy.web.api.Browser;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 import com.redhat.darcy.web.api.elements.HtmlLink;
@@ -50,9 +48,6 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
         return new ViewList<>(HtmlTable::new, parents);
     }
 
-    @Context
-    private Browser browser;
-
     @Override
     public boolean isLoaded() {
         return isDisplayed();
@@ -74,7 +69,12 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
             ? "./tbody/tr"
             : "./tr";
 
-        return browser.find().elements(byInner(By.xpath(xpath))).size();
+        return getContext().find().elements(byInner(By.xpath(xpath))).size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return getRowCount() == 0;
     }
 
     @Override
@@ -113,10 +113,24 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
         return byInner(By.xpath(xpath));
     }
 
+    /**
+     * A partial {@link com.redhat.darcy.ui.api.elements.Table.ColumnDefinition} implementation for
+     * {@link com.redhat.darcy.web.HtmlTable HtmlTables}.
+     * @param <T> The type of contents within this column.
+     */
     public static class HtmlColumn<T> implements ColumnDefinition<HtmlTable, T> {
         private final BiFunction<WebContext, Locator, T> cellDefinition;
         private final int index;
 
+        /**
+         * Creates a new column definition for a column within an
+         * {@link com.redhat.darcy.web.HtmlTable}.
+         * @param cellDefinition A function that takes the context of the table, and a locator to
+         * an element within that column. Together, they can be used to find a cell within that
+         * column, or possibly an element nested within that cell. The function is expected to
+         * return the content of that cell, typed appropriately by T.
+         * @param index The index of the column, counting from 1, where 1 is the leftmost column.
+         */
         public HtmlColumn(BiFunction<WebContext, Locator, T> cellDefinition, int index) {
             this.cellDefinition = cellDefinition;
             this.index = index;
@@ -130,7 +144,7 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
 
     public static class HtmlTextColumn extends HtmlColumn<String> {
         public HtmlTextColumn(int index) {
-            super((c, l) -> c.find().label(l).getText(), index);
+            super((c, l) -> c.find().text(l).getText(), index);
         }
     }
 
