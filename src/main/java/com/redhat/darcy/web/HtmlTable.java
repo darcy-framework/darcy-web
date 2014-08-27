@@ -34,6 +34,44 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+/**
+ * A reusable {@link com.redhat.darcy.ui.api.ViewElement} describing simple, semantic HTML tables,
+ * constructed of the {@code <table>}, {@code <tr>}, {@code <td>}, and (optionally) {@code <tbody>}
+ * tags. Columns can defined instantiating new types of
+ * {@link com.redhat.darcy.web.HtmlTable.HtmlColumn HtmlColumns}, or instantiating one of the
+ * predefined types of common column configurations like basic text content via
+ * {@link com.redhat.darcy.web.HtmlTable.HtmlTextColumn}, or links via
+ * {@link com.redhat.darcy.web.HtmlTable.HtmlLinkColumn}.
+ *
+ * <p>Define these columns as private static final constants in your page object that contains the
+ * HtmlTable, or, if your specific table and column configuration is reused in multiple pages, in
+ * your own subclass of HtmlTable with public or package visibility.
+ *
+ * <p>To use an HtmlTable as a field, see {@link #htmlTable(com.redhat.darcy.ui.api.Locator)} and
+ * {@link #htmlTables(com.redhat.darcy.ui.api.Locator)}.
+ *
+ * <p>Example usage:
+ *
+ * <code><pre>
+ *     import static com.redhat.darcy.web.HtmlTable.htmlTable;
+ *     import static org.hamcrest.Matchers.equalTo;
+ *
+ *     public class Staff extends AbstractView {
+ *         {@literal @}Require
+ *         private Table{@code<HtmlTable>} staffEmails = htmlTable(By.id("staffEmails"));
+ *
+ *         private static final HtmlColumn{@code<String>} FULL_NAME = new HtmlTextColumn(1);
+ *         private static final HtmlColumn{@code<HtmlLink>} EMAIL = new HtmlLinkColumn(2);
+ *
+ *         public HtmlLink getEmailLinkByStaff(String fullName) {
+ *             return staffEmails.getRowsWhere(FULL_NAME, equalTo((fullName)))
+ *                     .findFirst()
+ *                     .orElseThrow(() -> new AssertionError("No staff member found by name, " + fullName)
+ *                     .getCell(EMAIL);
+ *         }
+ *     }
+ * </pre></code>
+ */
 public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, HtmlElement {
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
 
@@ -125,6 +163,7 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
         /**
          * Creates a new column definition for a column within an
          * {@link com.redhat.darcy.web.HtmlTable}.
+         *
          * @param cellDefinition A function that takes the context of the table, and a locator to
          * an element within that column. Together, they can be used to find a cell within that
          * column, or possibly an element nested within that cell. The function is expected to
@@ -143,12 +182,18 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
     }
 
     public static class HtmlTextColumn extends HtmlColumn<String> {
+        /**
+         * @param index The index of the column, counting from 1, where 1 is the leftmost column.
+         */
         public HtmlTextColumn(int index) {
             super((c, l) -> c.find().text(l).getText(), index);
         }
     }
 
     public static class HtmlLinkColumn extends HtmlColumn<HtmlLink> {
+        /**
+         * @param index The index of the column, counting from 1, where 1 is the leftmost column.
+         */
         public HtmlLinkColumn(int index) {
             super((c, l) -> c.find().htmlLink(By.chained(l, By.xpath("./a"))), index);
         }
