@@ -19,6 +19,7 @@
 
 package com.redhat.darcy.web.api.elements;
 
+import com.redhat.darcy.ui.api.elements.Clickable;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.HasAttributes;
 
@@ -27,9 +28,11 @@ import java.util.Set;
 /**
  * Elements that wrap specific elements in an HTML document are expected to implement this
  * interface, which gives clients APIs to access attributes and other HTML specifics about the
- * element.
+ * element. Additionally, since all HTML elements that have some positive width and height can
+ * process click events, this interface extends {@link com.redhat.darcy.ui.api.elements.Clickable},
+ * unlike the more generic {@link com.redhat.darcy.ui.api.elements.Element} interface in darcy-ui.
  */
-public interface HtmlElement extends Element, HasAttributes {
+public interface HtmlElement extends Element, HasAttributes, Clickable {
     /**
      * @return The actual HTML tag of the element this refers to.
      */
