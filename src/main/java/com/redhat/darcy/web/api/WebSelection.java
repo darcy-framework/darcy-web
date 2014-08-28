@@ -28,6 +28,7 @@ import com.redhat.darcy.web.api.elements.HtmlFileSelect;
 import com.redhat.darcy.web.api.elements.HtmlLabel;
 import com.redhat.darcy.web.api.elements.HtmlLink;
 import com.redhat.darcy.web.api.elements.HtmlSelect;
+import com.redhat.darcy.web.api.elements.HtmlText;
 import com.redhat.darcy.web.api.elements.HtmlTextInput;
 
 import java.util.List;
@@ -109,5 +110,13 @@ public interface WebSelection extends ContextSelection, ElementSelection {
 
     default List<HtmlSelect> htmlSelects(Locator locator) {
         return elementsOfType(HtmlSelect.class, locator);
+    }
+
+    default HtmlText htmlText(Locator locator) {
+        return elementOfType(HtmlText.class, locator);
+    }
+
+    default List<HtmlText> htmlTexts(Locator locator) {
+        return elementsOfType(HtmlText.class, locator);
     }
 }
