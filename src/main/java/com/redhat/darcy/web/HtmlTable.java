@@ -29,10 +29,12 @@ import com.redhat.darcy.ui.internal.ViewList;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 import com.redhat.darcy.web.api.elements.HtmlLink;
+import com.redhat.darcy.web.api.elements.HtmlText;
 
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * A reusable {@link com.redhat.darcy.ui.api.ViewElement} describing simple, semantic HTML tables,
@@ -40,7 +42,7 @@ import java.util.function.BiFunction;
  * tags. Columns can defined instantiating new types of
  * {@link com.redhat.darcy.web.HtmlTable.HtmlColumn HtmlColumns}, or instantiating one of the
  * predefined types of common column configurations like basic text content via
- * {@link com.redhat.darcy.web.HtmlTable.HtmlTextColumn}, or links via
+ * {@link com.redhat.darcy.web.HtmlTable.HtmlStringColumn}, or links via
  * {@link com.redhat.darcy.web.HtmlTable.HtmlLinkColumn}.
  *
  * <p>Define these columns as private static final constants in your page object that contains the
@@ -74,6 +76,7 @@ import java.util.function.BiFunction;
  */
 public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, HtmlElement {
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
+    private final HtmlElement headerTag = htmlElement(byInner(By.htmlTag("thead")));
 
     public HtmlTable(Locator parent) { super(parent); }
     public HtmlTable(Element parent) { super(parent); }
@@ -116,6 +119,11 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
     }
 
     @Override
+    public void click() {
+        ((HtmlElement) parent).click();
+    }
+
+    @Override
     public String getTagName() {
         return ((HtmlElement) parent).getTagName();
     }
@@ -133,6 +141,19 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
     @Override
     public String getAttribute(String attribute) {
         return ((HtmlElement) parent).getAttribute(attribute);
+    }
+
+    // TODO: rowspan? colspan?
+    protected Locator byHeader(int col) {
+        if (col < 1) {
+            throw new IllegalArgumentException("Column index must be greater than 0.");
+        }
+
+        String xpath = headerTag.isPresent()
+                ? "./thead/tr[1]/th[" + col + "]"
+                : "./tr[1]/th[" + col + "]";
+
+        return byInner(By.xpath(xpath));
     }
 
     protected Locator byRowColumn(int row, int col) {
@@ -156,8 +177,9 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
      * {@link com.redhat.darcy.web.HtmlTable HtmlTables}.
      * @param <T> The type of contents within this column.
      */
-    public static class HtmlColumn<T> implements ColumnDefinition<HtmlTable, T> {
-        private final BiFunction<WebContext, Locator, T> cellDefinition;
+    public static class HtmlColumn<T, U> implements ColumnWithHeaderDefinition<HtmlTable, T, U> {
+        private final BiFunction<WebContext, Locator, T> rowDef;
+        private final BiFunction<WebContext, Locator, U> headerDef;
         private final int index;
 
         /**
@@ -170,32 +192,40 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
          * return the content of that cell, typed appropriately by T.
          * @param index The index of the column, counting from 1, where 1 is the leftmost column.
          */
-        public HtmlColumn(BiFunction<WebContext, Locator, T> cellDefinition, int index) {
-            this.cellDefinition = cellDefinition;
+        public HtmlColumn(int index, BiFunction<WebContext, Locator, T> rowDef,
+                BiFunction<WebContext, Locator, U> headerDef) {
+            this.rowDef = rowDef;
+            this.headerDef = headerDef;
             this.index = index;
         }
 
         @Override
+        public U getHeader(HtmlTable table) {
+            return headerDef.apply((WebContext) table.getContext(), table.byHeader(index));
+        }
+
+        @Override
         public T getCell(HtmlTable table, int row) {
-            return cellDefinition.apply((WebContext) table.getContext(), table.byRowColumn(row, index));
+            return rowDef.apply((WebContext) table.getContext(), table.byRowColumn(row, index));
         }
     }
 
-    public static class HtmlTextColumn extends HtmlColumn<String> {
+    public static class HtmlStringColumn extends HtmlColumn<String, HtmlText> {
         /**
          * @param index The index of the column, counting from 1, where 1 is the leftmost column.
          */
-        public HtmlTextColumn(int index) {
-            super((c, l) -> c.find().text(l).getText(), index);
+        public HtmlStringColumn(int index) {
+            super(index, (c, l) -> c.find().text(l).getText(), (c, l) -> c.find().htmlText(l));
         }
     }
 
-    public static class HtmlLinkColumn extends HtmlColumn<HtmlLink> {
+    public static class HtmlLinkColumn extends HtmlColumn<HtmlLink, HtmlText> {
         /**
          * @param index The index of the column, counting from 1, where 1 is the leftmost column.
          */
         public HtmlLinkColumn(int index) {
-            super((c, l) -> c.find().htmlLink(By.chained(l, By.xpath("./a"))), index);
+            super(index, (c, l) -> c.find().htmlLink(By.chained(l, By.xpath("./a"))),
+                    (c, l) -> c.find().htmlText(l));
         }
     }
 }
