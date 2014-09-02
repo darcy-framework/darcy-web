@@ -202,7 +202,7 @@ public class JQueryDataTable extends AbstractViewElement implements
      * @param suffix The suffix to append after the inner table's id, plus an _, in the format,
      * ${table's_id}_${suffix}.
      */
-    protected Locator bySuffix(String suffix) {
+    protected Locator byIdSuffix(String suffix) {
         if (tableId == null) {
             tableId = table.getAttribute("id");
         }
@@ -212,7 +212,7 @@ public class JQueryDataTable extends AbstractViewElement implements
 
     protected HtmlLink navNext() {
         if (navNext == null) {
-            navNext = context.find().htmlLink(bySuffix("next"));
+            navNext = context.find().htmlLink(byIdSuffix("next"));
         }
 
         return navNext;
@@ -220,7 +220,7 @@ public class JQueryDataTable extends AbstractViewElement implements
 
     protected HtmlLink navPrevious() {
         if (navPrevious == null) {
-            navPrevious = context.find().htmlLink(bySuffix("previous"));
+            navPrevious = context.find().htmlLink(byIdSuffix("previous"));
         }
 
         return navPrevious;
@@ -228,7 +228,7 @@ public class JQueryDataTable extends AbstractViewElement implements
 
     protected HtmlLink navFirst() {
         if (navFirst == null) {
-            navFirst = context.find().htmlLink(bySuffix("first"));
+            navFirst = context.find().htmlLink(byIdSuffix("first"));
         }
 
         return navFirst;
