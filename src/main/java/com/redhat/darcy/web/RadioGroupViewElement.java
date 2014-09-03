@@ -27,6 +27,7 @@ import com.redhat.darcy.ui.api.elements.RadioGroup;
 import com.redhat.darcy.ui.internal.ViewList;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RadioGroupViewElement extends AbstractViewElement implements RadioGroup {
     public RadioGroupViewElement(Locator parent) {
@@ -51,13 +52,13 @@ public class RadioGroupViewElement extends AbstractViewElement implements RadioG
     }
 
     @Override
-    public Radio getCurrentlySelectedOption() {
+    public Optional<Radio> getSelectedOption() {
         for (Radio radio : getOptions()) {
             if (radio.isSelected()) {
-                return radio;
+                return Optional.of(radio);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 }
