@@ -26,6 +26,7 @@ import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Table;
 import com.redhat.darcy.ui.internal.ViewList;
+import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 import com.redhat.darcy.web.api.elements.HtmlLink;
 
@@ -75,7 +76,7 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
         }
 
         static Column<HtmlLink> link(int col) {
-            return (t, r) -> (HtmlLink) t.getContext().find().link(byRowColumn(t, r, col));
+            return (t, r) -> t.getContext().find().htmlLink(byRowColumn(t, r, col));
         }
     }
 
@@ -119,6 +120,11 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
 
     public static List<HtmlTable> htmlTables(Locator parents) {
         return new ViewList<>(HtmlTable::new, parents);
+    }
+
+    @Override
+    public WebContext getContext() {
+        return (WebContext) super.getContext();
     }
 
     @Override
