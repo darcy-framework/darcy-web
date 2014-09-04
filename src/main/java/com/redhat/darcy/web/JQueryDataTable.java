@@ -42,12 +42,30 @@ import java.util.regex.Pattern;
 
 public class JQueryDataTable extends AbstractViewElement implements
         PaginatedSortableTable<JQueryDataTable> {
+    public static interface Column<T> extends ColumnDefinition<JQueryDataTable, T> {
+        static Column<String> text(int col) {
+            return (t, r) -> t.getContext().find().text(byRowColumn(t, r, col)).getText();
+        }
+
+        static Column<HtmlLink> link(int col) {
+            return (t, r) -> t.getContext().find().htmlLink(byRowColumn(t, r, col));
+        }
+    }
+
+    public static Locator byHeader(JQueryDataTable table, int col) {
+        return HtmlTable.byHeader(table.htmlTable, col);
+    }
+
+    public static Locator byRowColumn(JQueryDataTable table, int row, int col) {
+        return HtmlTable.byRowColumn(table.htmlTable, row, col);
+    }
+
     private static final Pattern SHOW_START = Pattern.compile(".*?([\\d,]+).*?[\\d,]+");
     private static final Pattern SHOW_END = Pattern.compile(".*?[\\d,]+.*?([\\d,]+)");
     private static final Pattern SHOW_TOTAL = Pattern.compile(".*?[\\d,]+.*?[\\d,]+ of ([\\d,]+)");
 
     @Require
-    private HtmlTable table = htmlTable(byInner(By.htmlTag("table")));
+    private HtmlTable htmlTable = htmlTable(byInner(By.htmlTag("table")));
     private Label info = label(byInner(By.css(".dataTables_info")));
 
     private HtmlLink navPrevious;
@@ -55,9 +73,6 @@ public class JQueryDataTable extends AbstractViewElement implements
     private HtmlLink navFirst;
 
     private Label isEmpty = label(byInner(By.css(".dataTables_empty")));
-
-    @Context
-    private WebContext context;
 
     private String tableId;
 
@@ -75,6 +90,11 @@ public class JQueryDataTable extends AbstractViewElement implements
      */
     public JQueryDataTable(Element parent) {
         super(parent);
+    }
+
+    @Override
+    public WebContext getContext() {
+        return (WebContext) super.getContext();
     }
 
     @Override
@@ -204,7 +224,7 @@ public class JQueryDataTable extends AbstractViewElement implements
      */
     protected Locator byIdSuffix(String suffix) {
         if (tableId == null) {
-            tableId = table.getAttribute("id");
+            tableId = htmlTable.getAttribute("id");
         }
 
         return byInner(By.id(tableId + "_" + suffix));
@@ -212,7 +232,7 @@ public class JQueryDataTable extends AbstractViewElement implements
 
     protected HtmlLink navNext() {
         if (navNext == null) {
-            navNext = context.find().htmlLink(byIdSuffix("next"));
+            navNext = getContext().find().htmlLink(byIdSuffix("next"));
         }
 
         return navNext;
@@ -220,7 +240,7 @@ public class JQueryDataTable extends AbstractViewElement implements
 
     protected HtmlLink navPrevious() {
         if (navPrevious == null) {
-            navPrevious = context.find().htmlLink(byIdSuffix("previous"));
+            navPrevious = getContext().find().htmlLink(byIdSuffix("previous"));
         }
 
         return navPrevious;
@@ -228,7 +248,7 @@ public class JQueryDataTable extends AbstractViewElement implements
 
     protected HtmlLink navFirst() {
         if (navFirst == null) {
-            navFirst = context.find().htmlLink(byIdSuffix("first"));
+            navFirst = getContext().find().htmlLink(byIdSuffix("first"));
         }
 
         return navFirst;
