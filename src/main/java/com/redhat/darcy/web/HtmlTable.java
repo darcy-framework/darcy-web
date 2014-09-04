@@ -26,24 +26,18 @@ import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Table;
 import com.redhat.darcy.ui.internal.ViewList;
-import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 import com.redhat.darcy.web.api.elements.HtmlLink;
-import com.redhat.darcy.web.api.elements.HtmlText;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * A reusable {@link com.redhat.darcy.ui.api.ViewElement} describing simple, semantic HTML tables,
  * constructed of the {@code <table>}, {@code <tr>}, {@code <td>}, and (optionally) {@code <tbody>}
- * tags. Columns can defined instantiating new types of
- * {@link com.redhat.darcy.web.HtmlTable.HtmlColumn HtmlColumns}, or instantiating one of the
- * predefined types of common column configurations like basic text content via
- * {@link com.redhat.darcy.web.HtmlTable.HtmlStringColumn}, or links via
- * {@link com.redhat.darcy.web.HtmlTable.HtmlLinkColumn}.
+ * tags. Rows and headers can be found within the table with special locators that have visibility
+ * into the HtmlTable class, {@link #byRowColumn(HtmlTable, int, int)} and
+ * {@link #byHeader(HtmlTable, int)}.
  *
  * <p>Define these columns as private static final constants in your page object that contains the
  * HtmlTable, or, if your specific table and column configuration is reused in multiple pages, in
@@ -62,8 +56,8 @@ import java.util.function.Function;
  *         {@literal @}Require
  *         private Table{@code<HtmlTable>} staffEmails = htmlTable(By.id("staffEmails"));
  *
- *         private static final HtmlColumn{@code<String>} FULL_NAME = new HtmlTextColumn(1);
- *         private static final HtmlColumn{@code<HtmlLink>} EMAIL = new HtmlLinkColumn(2);
+ *         private static final HtmlTable.Column{@code<String>} FULL_NAME = HtmlTable.Column.text(1);
+ *         private static final HtmlTable.Column{@code<HtmlLink>} EMAIL = HtmlTable.Column.link(2);
  *
  *         public HtmlLink getEmailLinkByStaff(String fullName) {
  *             return staffEmails.getRowsWhere(FULL_NAME, equalTo((fullName)))
@@ -75,6 +69,44 @@ import java.util.function.Function;
  * </pre></code>
  */
 public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, HtmlElement {
+    public static interface Column<T> extends ColumnDefinition<HtmlTable, T> {
+        static Column<String> text(int col) {
+            return (t, r) -> t.getContext().find().text(byRowColumn(t, r, col)).getText();
+        }
+
+        static Column<HtmlLink> link(int col) {
+            return (t, r) -> (HtmlLink) t.getContext().find().link(byRowColumn(t, r, col));
+        }
+    }
+
+    public static Locator byHeader(HtmlTable table, int col) {
+        if (col < 1) {
+            throw new IllegalArgumentException("Column index must be greater than 0.");
+        }
+
+        String xpath = table.headerTag.isPresent()
+                ? "./thead/tr[1]/th[" + col + "]"
+                : "./tr[1]/th[" + col + "]";
+
+        return table.byInner(By.xpath(xpath));
+    }
+
+    public static Locator byRowColumn(HtmlTable table, int row, int col) {
+        if (row < 1) {
+            throw new IllegalArgumentException("Row index must be greater than 0.");
+        }
+
+        if (col < 1) {
+            throw new IllegalArgumentException("Column index must be greater than 0.");
+        }
+
+        String xpath = table.bodyTag.isPresent()
+                ? "./tbody/tr[" + row + "]/td[" + col + "]"
+                : "./tr[" + row + "]/td[" + col + "]";
+
+        return table.byInner(By.xpath(xpath));
+    }
+
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
     private final HtmlElement headerTag = htmlElement(byInner(By.htmlTag("thead")));
 
@@ -141,91 +173,5 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
     @Override
     public String getAttribute(String attribute) {
         return ((HtmlElement) parent).getAttribute(attribute);
-    }
-
-    // TODO: rowspan? colspan?
-    protected Locator byHeader(int col) {
-        if (col < 1) {
-            throw new IllegalArgumentException("Column index must be greater than 0.");
-        }
-
-        String xpath = headerTag.isPresent()
-                ? "./thead/tr[1]/th[" + col + "]"
-                : "./tr[1]/th[" + col + "]";
-
-        return byInner(By.xpath(xpath));
-    }
-
-    protected Locator byRowColumn(int row, int col) {
-        if (row < 1) {
-            throw new IllegalArgumentException("Row index must be greater than 0.");
-        }
-
-        if (col < 1) {
-            throw new IllegalArgumentException("Column index must be greater than 0.");
-        }
-
-        String xpath = bodyTag.isPresent()
-                ? "./tbody/tr[" + row + "]/td[" + col + "]"
-                : "./tr[" + row + "]/td[" + col + "]";
-
-        return byInner(By.xpath(xpath));
-    }
-
-    /**
-     * A partial {@link com.redhat.darcy.ui.api.elements.Table.ColumnDefinition} implementation for
-     * {@link com.redhat.darcy.web.HtmlTable HtmlTables}.
-     * @param <T> The type of contents within this column.
-     */
-    public static class HtmlColumn<T, U> implements ColumnWithHeaderDefinition<HtmlTable, T, U> {
-        private final BiFunction<WebContext, Locator, T> rowDef;
-        private final BiFunction<WebContext, Locator, U> headerDef;
-        private final int index;
-
-        /**
-         * Creates a new column definition for a column within an
-         * {@link com.redhat.darcy.web.HtmlTable}.
-         *
-         * @param cellDefinition A function that takes the context of the table, and a locator to
-         * an element within that column. Together, they can be used to find a cell within that
-         * column, or possibly an element nested within that cell. The function is expected to
-         * return the content of that cell, typed appropriately by T.
-         * @param index The index of the column, counting from 1, where 1 is the leftmost column.
-         */
-        public HtmlColumn(int index, BiFunction<WebContext, Locator, T> rowDef,
-                BiFunction<WebContext, Locator, U> headerDef) {
-            this.rowDef = rowDef;
-            this.headerDef = headerDef;
-            this.index = index;
-        }
-
-        @Override
-        public U getHeader(HtmlTable table) {
-            return headerDef.apply((WebContext) table.getContext(), table.byHeader(index));
-        }
-
-        @Override
-        public T getCell(HtmlTable table, int row) {
-            return rowDef.apply((WebContext) table.getContext(), table.byRowColumn(row, index));
-        }
-    }
-
-    public static class HtmlStringColumn extends HtmlColumn<String, HtmlText> {
-        /**
-         * @param index The index of the column, counting from 1, where 1 is the leftmost column.
-         */
-        public HtmlStringColumn(int index) {
-            super(index, (c, l) -> c.find().text(l).getText(), (c, l) -> c.find().htmlText(l));
-        }
-    }
-
-    public static class HtmlLinkColumn extends HtmlColumn<HtmlLink, HtmlText> {
-        /**
-         * @param index The index of the column, counting from 1, where 1 is the leftmost column.
-         */
-        public HtmlLinkColumn(int index) {
-            super(index, (c, l) -> c.find().htmlLink(By.chained(l, By.xpath("./a"))),
-                    (c, l) -> c.find().htmlText(l));
-        }
     }
 }
