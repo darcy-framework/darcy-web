@@ -26,12 +26,12 @@ import static org.hamcrest.Matchers.equalTo;
 
 import com.redhat.darcy.ui.AbstractViewElement;
 import com.redhat.darcy.ui.DarcyException;
-import com.redhat.darcy.ui.annotations.Context;
 import com.redhat.darcy.ui.annotations.Require;
 import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Label;
 import com.redhat.darcy.ui.api.elements.PaginatedSortableTable;
+import com.redhat.darcy.ui.api.elements.Table;
 import com.redhat.darcy.ui.matchers.ViewMatchers;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlLink;
@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 public class JQueryDataTable extends AbstractViewElement implements
         PaginatedSortableTable<JQueryDataTable> {
-    public static interface Column<T> extends ColumnDefinition<JQueryDataTable, T> {
+    public static interface Column<T> extends Table.Column<JQueryDataTable, T> {
         static Column<String> text(int col) {
             return (t, r) -> t.getContext().find().text(byRowColumn(t, r, col)).getText();
         }

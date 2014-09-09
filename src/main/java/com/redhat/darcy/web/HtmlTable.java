@@ -70,7 +70,7 @@ import java.util.Set;
  * </pre></code>
  */
 public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, HtmlElement {
-    public static interface Column<T> extends ColumnDefinition<HtmlTable, T> {
+    public static interface Column<T> extends Table.Column<HtmlTable, T> {
         static Column<String> text(int col) {
             return (t, r) -> t.getContext().find().text(byRowColumn(t, r, col)).getText();
         }
