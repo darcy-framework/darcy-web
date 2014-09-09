@@ -69,58 +69,12 @@ import java.util.Set;
  *     }
  * </pre></code>
  */
-public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, HtmlElement {
-    public static interface Column<T> extends ColumnDefinition<HtmlTable, T> {
-        static Column<String> text(int col) {
-            return (t, r) -> t.getContext().find().text(byRowColumn(t, r, col)).getText();
-        }
-
-        static Column<HtmlLink> link(int col) {
-            return (t, r) -> t.getContext().find().htmlLink(byRowColumn(t, r, col));
-        }
-    }
-
-    public static Locator byHeader(HtmlTable table, int col) {
-        if (col < 1) {
-            throw new IllegalArgumentException("Column index must be greater than 0.");
-        }
-
-        String xpath = table.headerTag.isPresent()
-                ? "./thead/tr[1]/th[" + col + "]"
-                : "./tr[1]/th[" + col + "]";
-
-        return table.byInner(By.xpath(xpath));
-    }
-
-    public static Locator byRowColumn(HtmlTable table, int row, int col) {
-        if (row < 1) {
-            throw new IllegalArgumentException("Row index must be greater than 0.");
-        }
-
-        if (col < 1) {
-            throw new IllegalArgumentException("Column index must be greater than 0.");
-        }
-
-        String xpath = table.bodyTag.isPresent()
-                ? "./tbody/tr[" + row + "]/td[" + col + "]"
-                : "./tr[" + row + "]/td[" + col + "]";
-
-        return table.byInner(By.xpath(xpath));
-    }
-
+public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement implements Table<T>, HtmlElement {
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
     private final HtmlElement headerTag = htmlElement(byInner(By.htmlTag("thead")));
 
     public HtmlTable(Locator parent) { super(parent); }
     public HtmlTable(Element parent) { super(parent); }
-
-    public static HtmlTable htmlTable(Locator parent) {
-        return new HtmlTable(parent);
-    }
-
-    public static List<HtmlTable> htmlTables(Locator parents) {
-        return new ViewList<>(HtmlTable::new, parents);
-    }
 
     @Override
     public WebContext getContext() {
@@ -179,5 +133,33 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
     @Override
     public String getAttribute(String attribute) {
         return ((HtmlElement) parent).getAttribute(attribute);
+    }
+
+    protected Locator byHeader(int col) {
+        if (col < 1) {
+            throw new IllegalArgumentException("Column index must be greater than 0.");
+        }
+
+        String xpath = headerTag.isPresent()
+                ? "./thead/tr[1]/th[" + col + "]"
+                : "./tr[1]/th[" + col + "]";
+
+        return byInner(By.xpath(xpath));
+    }
+
+    protected Locator byRowColumn(int row, int col) {
+        if (row < 1) {
+            throw new IllegalArgumentException("Row index must be greater than 0.");
+        }
+
+        if (col < 1) {
+            throw new IllegalArgumentException("Column index must be greater than 0.");
+        }
+
+        String xpath = bodyTag.isPresent()
+                ? "./tbody/tr[" + row + "]/td[" + col + "]"
+                : "./tr[" + row + "]/td[" + col + "]";
+
+        return byInner(By.xpath(xpath));
     }
 }

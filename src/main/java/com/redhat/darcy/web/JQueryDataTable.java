@@ -20,13 +20,11 @@
 package com.redhat.darcy.web;
 
 import static com.redhat.darcy.ui.Elements.label;
-import static com.redhat.darcy.web.HtmlTable.htmlTable;
 import static com.redhat.synq.Synq.after;
 import static org.hamcrest.Matchers.equalTo;
 
 import com.redhat.darcy.ui.AbstractViewElement;
 import com.redhat.darcy.ui.DarcyException;
-import com.redhat.darcy.ui.annotations.Context;
 import com.redhat.darcy.ui.annotations.Require;
 import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
@@ -40,32 +38,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JQueryDataTable extends AbstractViewElement implements
-        PaginatedSortableTable<JQueryDataTable> {
-    public static interface Column<T> extends ColumnDefinition<JQueryDataTable, T> {
-        static Column<String> text(int col) {
-            return (t, r) -> t.getContext().find().text(byRowColumn(t, r, col)).getText();
-        }
-
-        static Column<HtmlLink> link(int col) {
-            return (t, r) -> t.getContext().find().htmlLink(byRowColumn(t, r, col));
-        }
-    }
-
-    public static Locator byHeader(JQueryDataTable table, int col) {
-        return HtmlTable.byHeader(table.htmlTable, col);
-    }
-
-    public static Locator byRowColumn(JQueryDataTable table, int row, int col) {
-        return HtmlTable.byRowColumn(table.htmlTable, row, col);
-    }
-
+public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement implements
+        PaginatedSortableTable<T> {
     private static final Pattern SHOW_START = Pattern.compile(".*?([\\d,]+).*?[\\d,]+");
     private static final Pattern SHOW_END = Pattern.compile(".*?[\\d,]+.*?([\\d,]+)");
     private static final Pattern SHOW_TOTAL = Pattern.compile(".*?[\\d,]+.*?[\\d,]+ of ([\\d,]+)");
 
     @Require
-    private HtmlTable htmlTable = htmlTable(byInner(By.htmlTag("table")));
+    private InnerTable innerTable = new InnerTable(byInner(By.htmlTag("table")));
     private Label info = label(byInner(By.css(".dataTables_info")));
 
     private HtmlLink navPrevious;
@@ -112,9 +92,9 @@ public class JQueryDataTable extends AbstractViewElement implements
     }
 
     @Override
-    public JQueryDataTable toPage(int page) {
+    public T toPage(int page) {
         if (page == 1 && navFirst().isDisplayed()) {
-            return after(navFirst()::click)
+            return (T) after(navFirst()::click)
                     .expectCallTo(this::getCurrentPage, equalTo(1))
                     .describedAs("the datatable to be at the first page")
                     .andThenExpect(this, ViewMatchers.isLoaded())
@@ -129,17 +109,17 @@ public class JQueryDataTable extends AbstractViewElement implements
             navPrevious();
         }
 
-        return this;
+        return (T) this;
     }
 
     @Override
-    public JQueryDataTable previousPage() {
+    public T previousPage() {
         if (!hasPreviousPage()) {
             throw new IndexOutOfBoundsException("There is no previous page to navigate to. Current "
                     + "page is " + getCurrentPage());
         }
 
-        return after(navPrevious()::click)
+        return (T) after(navPrevious()::click)
                 .expectCallTo(this::getCurrentPage, equalTo(getCurrentPage() - 1))
                 .describedAs("the datatable's current page to be decremented by 1")
                 .andThenExpect(this, ViewMatchers.isLoaded())
@@ -147,13 +127,13 @@ public class JQueryDataTable extends AbstractViewElement implements
     }
 
     @Override
-    public JQueryDataTable nextPage() {
+    public T nextPage() {
         if (!hasNextPage()) {
             throw new IndexOutOfBoundsException("There is no next page to navigate to. Current page"
                     + " is " + getCurrentPage());
         }
 
-        return after(navNext()::click)
+        return (T) after(navNext()::click)
                 .expectCallTo(this::getCurrentPage, equalTo(getCurrentPage() + 1))
                 .describedAs("the datatable's current page to be incremented by 1")
                 .andThenExpect(this, ViewMatchers.isLoaded())
@@ -213,6 +193,14 @@ public class JQueryDataTable extends AbstractViewElement implements
         return Integer.parseInt(matcher.group(1).replaceAll(",", ""));
     }
 
+    protected Locator byHeader(int col) {
+        return innerTable.byHeader(col);
+    }
+
+    protected Locator byRowColumn(int row, int col) {
+        return innerTable.byRowColumn(row, col);
+    }
+
     /**
      * Many elements within the wrapper div have ids in the format, ${table's_id}_${suffix}. This
      * itself is a locator strategy, implemented by this method. The returned locator can be used
@@ -224,7 +212,7 @@ public class JQueryDataTable extends AbstractViewElement implements
      */
     protected Locator byIdSuffix(String suffix) {
         if (tableId == null) {
-            tableId = htmlTable.getAttribute("id");
+            tableId = innerTable.getAttribute("id");
         }
 
         return byInner(By.id(tableId + "_" + suffix));
@@ -252,5 +240,12 @@ public class JQueryDataTable extends AbstractViewElement implements
         }
 
         return navFirst;
+    }
+
+    private class InnerTable extends HtmlTable<InnerTable> {
+
+        public InnerTable(Locator parent) {
+            super(parent);
+        }
     }
 }
