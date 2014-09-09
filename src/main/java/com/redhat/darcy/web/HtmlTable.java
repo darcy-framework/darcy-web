@@ -177,7 +177,7 @@ public class HtmlTable extends AbstractViewElement implements Table<HtmlTable>, 
      * {@link com.redhat.darcy.web.HtmlTable HtmlTables}.
      * @param <T> The type of contents within this column.
      */
-    public static class HtmlColumn<T, U> implements ColumnWithHeaderDefinition<HtmlTable, T, U> {
+    public static class HtmlColumn<T, U> implements ColumnWithHeader<HtmlTable, T, U> {
         private final BiFunction<WebContext, Locator, T> rowDef;
         private final BiFunction<WebContext, Locator, U> headerDef;
         private final int index;
