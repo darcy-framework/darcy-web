@@ -38,8 +38,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement implements
-        PaginatedSortableTable<T> {
+public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement
+        implements PaginatedSortableTable<T> {
     private static final Pattern SHOW_START = Pattern.compile(".*?([\\d,]+).*?[\\d,]+");
     private static final Pattern SHOW_END = Pattern.compile(".*?[\\d,]+.*?([\\d,]+)");
     private static final Pattern SHOW_TOTAL = Pattern.compile(".*?[\\d,]+.*?[\\d,]+ of ([\\d,]+)");
@@ -91,6 +91,7 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
         return isEmpty.isDisplayed();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T toPage(int page) {
         if (page == 1 && navFirst().isDisplayed()) {
@@ -112,6 +113,7 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T previousPage() {
         if (!hasPreviousPage()) {
@@ -126,6 +128,7 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
                 .waitUpTo(2, ChronoUnit.MINUTES); // TODO make configurable
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T nextPage() {
         if (!hasNextPage()) {
@@ -243,9 +246,19 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
     }
 
     private class InnerTable extends HtmlTable<InnerTable> {
-
         public InnerTable(Locator parent) {
             super(parent);
+        }
+
+        // Overridden to expose visibility of super class
+        @Override
+        protected Locator byHeader(int col) {
+            return super.byHeader(col);
+        }
+
+        @Override
+        protected Locator byRowColumn(int row, int col) {
+            return super.byRowColumn(row, col);
         }
     }
 }
