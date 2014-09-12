@@ -73,8 +73,11 @@ import java.util.Set;
  *         }
  *     }
  * </pre></code>
+ *
+ * @param <T> The type that is extending this class.
  */
-public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement implements Table<T>, HtmlElement {
+public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement implements Table<T>,
+        HtmlElement {
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
     private final HtmlElement headerTag = htmlElement(byInner(By.htmlTag("thead")));
 
@@ -101,6 +104,13 @@ public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement 
         return parent.isPresent();
     }
 
+    /**
+     * This will count all of the {@code<tr>} tags within the {@code<tbody>} tag if one is present,
+     * otherwise will count all of the {@code<tr>} tags within the table.
+     *
+     * <p>If you're modeling an unconventional html table, you're encouraged to override this
+     * method.
+     */
     @Override
     public int getRowCount() {
         String xpath = bodyTag.isPresent()
@@ -140,30 +150,61 @@ public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement 
         return ((HtmlElement) parent).getAttribute(attribute);
     }
 
-    protected Locator byHeader(int col) {
-        if (col < 1) {
+    /**
+     * Conveniently allows column implementations to lookup headers without duplicating the effort
+     * to come up with xpath for each column's header. Simply use this method with that column's
+     * index.
+     *
+     * @return A locator that finds a header cell based on a column index. It does this by
+     * constructing an xpath. If a {@code<thead>} tag is present, this will use,
+     * "./thead/tr[1]/th[colIndex]". If no {@code<thead>} tag is present, "./tr[1]/th[colIndex]"
+     * will be used.
+     *
+     * <p>If your modelling an unconventionally structured html table, you're encouraged to override
+     * this method.
+     *
+     * @param colIndex index of the column to find a header cell, starting from the left at 1.
+     */
+    protected Locator byHeader(int colIndex) {
+        if (colIndex < 1) {
             throw new IllegalArgumentException("Column index must be greater than 0.");
         }
 
         String xpath = headerTag.isPresent()
-                ? "./thead/tr[1]/th[" + col + "]"
-                : "./tr[1]/th[" + col + "]";
+                ? "./thead/tr[1]/th[" + colIndex + "]"
+                : "./tr[1]/th[" + colIndex + "]";
 
         return byInner(By.xpath(xpath));
     }
 
-    protected Locator byRowColumn(int row, int col) {
-        if (row < 1) {
+    /**
+     * Conveniently allows column implementations to lookup cells inside a column without
+     * duplicating the effort to come up with xpath for each column's cells. Simply use this method
+     * with that column's index.
+     *
+     * @return A locator that finds a cell based on a row and column index. It does this by
+     * constructing an xpath. If a {@code<tbody>} tag is present, this will use,
+     * "./tbody/tr[rowIndex]/td[colIndex]". If no {@code<tbody>} tag is present,
+     * "./tr[rowIndex]/td[colIndex]" will be used.
+     *
+     * <p>If your modelling an unconventionally structured html table, you're encouraged to override
+     * this method.
+     *
+     * @param rowIndex Starting from the top, at 1.
+     * @param colIndex Starting from the left, at 1.
+     */
+    protected Locator byRowColumn(int rowIndex, int colIndex) {
+        if (rowIndex < 1) {
             throw new IllegalArgumentException("Row index must be greater than 0.");
         }
 
-        if (col < 1) {
+        if (colIndex < 1) {
             throw new IllegalArgumentException("Column index must be greater than 0.");
         }
 
         String xpath = bodyTag.isPresent()
-                ? "./tbody/tr[" + row + "]/td[" + col + "]"
-                : "./tr[" + row + "]/td[" + col + "]";
+                ? "./tbody/tr[" + rowIndex + "]/td[" + colIndex + "]"
+                : "./tr[" + rowIndex + "]/td[" + colIndex + "]";
 
         return byInner(By.xpath(xpath));
     }
