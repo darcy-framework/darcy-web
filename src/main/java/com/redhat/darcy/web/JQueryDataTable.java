@@ -121,11 +121,11 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
         }
 
         while (page > getCurrentPage()) {
-            navNext();
+            nextPage();
         }
 
         while (page < getCurrentPage()) {
-            navPrevious();
+            previousPage();
         }
 
         return (T) this;
