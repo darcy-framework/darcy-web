@@ -38,6 +38,24 @@ import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Like, {@link com.redhat.darcy.web.HtmlTable}, except for rich
+ * <a href="http://www.datatables.net">jQuery DataTables</a> instead of vanilla HTML tables. Extend
+ * this class and provide column implementations just as you would for
+ * {@link com.redhat.darcy.web.HtmlTable}.
+ *
+ * <p>This class implements {@link com.redhat.darcy.ui.api.elements.PaginatedSortableTable} because
+ * DataTables may allow sorting and may be paginated. However, not every usage of DataTables uses
+ * these features, so be mindful that just because these APIs exist, doesn't mean that the table may
+ * be sortable or paginated. In those cases, expect the APIs to return logical values
+ * (e.g. {@link #hasNextPage()} will return false if the table is not paginated).
+ *
+ * <p>In order to take advantage of sorting should that feature be enabled and you need it, you will
+ * have to write your column implementations so that those columns are sortable. See
+ * {@link com.redhat.darcy.ui.api.elements.SortableTable.SortableColumn}.
+ *
+ * @param <T> The type that is extending this class
+ */
 public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement
         implements PaginatedSortableTable<T> {
     private static final Pattern SHOW_START = Pattern.compile(".*?([\\d,]+).*?[\\d,]+");

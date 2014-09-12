@@ -34,37 +34,42 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A reusable {@link com.redhat.darcy.ui.api.ViewElement} describing simple, semantic HTML tables,
- * constructed of the {@code <table>}, {@code <tr>}, {@code <td>}, and (optionally) {@code <tbody>}
- * tags. Rows and headers can be found within the table with special locators that have visibility
- * into the HtmlTable class, {@link #byRowColumn(HtmlTable, int, int)} and
- * {@link #byHeader(HtmlTable, int)}.
+ * An extendable base {@link com.redhat.darcy.ui.api.ViewElement} describing simple, semantic HTML
+ * tables, constructed of the {@code <table>}, {@code <tr>}, {@code <td>}, and (optionally)
+ * {@code <tbody>} and {@code <thead>} tags.
  *
- * <p>Define these columns as private static final constants in your page object that contains the
- * HtmlTable, or, if your specific table and column configuration is reused in multiple pages, in
- * your own subclass of HtmlTable with public or package visibility.
- *
- * <p>To use an HtmlTable as a field, see {@link #htmlTable(com.redhat.darcy.ui.api.Locator)} and
- * {@link #htmlTables(com.redhat.darcy.ui.api.Locator)}.
+ * As outlined in the documentation for {@link com.redhat.darcy.ui.api.elements.Table}, extend this
+ * table not specifically to add extensions to the class or implement any methods, but to define
+ * columns: externally visible instances of {@link com.redhat.darcy.ui.api.elements.Table.Column}
+ * that have visibility into the table represented by this ViewElement by means of
+ * {@link #byRowColumn(int, int)}, {@link #byHeader(int)}, and
+ * {@link #byInner(com.redhat.darcy.ui.api.Locator...)}, and can therefore locate specific cells.
  *
  * <p>Example usage:
  *
  * <code><pre>
- *     import static com.redhat.darcy.web.HtmlTable.htmlTable;
  *     import static org.hamcrest.Matchers.equalTo;
  *
  *     public class Staff extends AbstractView {
  *         {@literal @}Require
- *         private Table{@code<HtmlTable>} staffEmails = htmlTable(By.id("staffEmails"));
- *
- *         private static final HtmlTable.Column{@code<String>} FULL_NAME = HtmlTable.Column.text(1);
- *         private static final HtmlTable.Column{@code<HtmlLink>} EMAIL = HtmlTable.Column.link(2);
+ *         private StaffEmailTable staffEmails = new StaffEmailTable(By.id("staffEmails"));
  *
  *         public HtmlLink getEmailLinkByStaff(String fullName) {
- *             return staffEmails.getRowsWhere(FULL_NAME, equalTo((fullName)))
+ *             return staffEmails.getRowsWhere(StaffEmailTable.FULL_NAME, equalTo((fullName)))
  *                     .findFirst()
  *                     .orElseThrow(() -> new AssertionError("No staff member found by name, " + fullName)
- *                     .getCell(EMAIL);
+ *                     .getCell(StaffEmailTable.EMAIL);
+ *         }
+ *
+ *         private static class StaffEmailTable extends HtmlTable{@code<StaffEmailTable>} {
+ *             private static final Column{@code<StaffEmailTable, String>} FULL_NAME =
+ *                     (t, r) -> t.getContext().find().text(t.byRowColumn(r, 1).getText();
+ *             private static final Column{@code<StaffEmailTable, HtmlLink>} EMAIL =
+ *                     (t, r) -> t.getContext().find().htmlLink(t.byRowColumn(r, 2);
+ *
+ *             private StaffEmailTable(By table) {
+ *                 super(table);
+ *             }
  *         }
  *     }
  * </pre></code>
