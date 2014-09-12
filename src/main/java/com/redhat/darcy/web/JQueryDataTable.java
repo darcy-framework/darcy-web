@@ -112,6 +112,11 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
     @SuppressWarnings("unchecked")
     @Override
     public T toPage(int page) {
+        if (page > getMaxPages()) {
+            throw new IndexOutOfBoundsException("There are only " + getMaxPages() + " pages; tried "
+                    + "to navigate to page " + page + ".");
+        }
+
         if (page == 1 && navFirst().isDisplayed()) {
             return (T) after(navFirst()::click)
                     .expectCallTo(this::getCurrentPage, equalTo(1))
