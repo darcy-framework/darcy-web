@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
  * have to write your column implementations so that those columns are sortable. See
  * {@link com.redhat.darcy.ui.api.elements.SortableTable.SortableColumn}.
  *
- * @param <T> The type that is extending this class
+ * @param <T> The type that is extending this class.
  */
 public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement
         implements PaginatedSortableTable<T> {
@@ -219,12 +219,12 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
         return Integer.parseInt(matcher.group(1).replaceAll(",", ""));
     }
 
-    protected Locator byHeader(int col) {
-        return innerTable.byHeader(col);
+    protected Locator byHeader(int colIndex) {
+        return innerTable.byHeader(colIndex);
     }
 
-    protected Locator byRowColumn(int row, int col) {
-        return innerTable.byRowColumn(row, col);
+    protected Locator byRowColumn(int rowIndex, int colIndex) {
+        return innerTable.byRowColumn(rowIndex, colIndex);
     }
 
     /**
@@ -275,13 +275,13 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
 
         // Overridden to expose visibility of super class
         @Override
-        protected Locator byHeader(int col) {
-            return super.byHeader(col);
+        protected Locator byHeader(int colIndex) {
+            return super.byHeader(colIndex);
         }
 
         @Override
-        protected Locator byRowColumn(int row, int col) {
-            return super.byRowColumn(row, col);
+        protected Locator byRowColumn(int rowIndex, int colIndex) {
+            return super.byRowColumn(rowIndex, colIndex);
         }
     }
 }
