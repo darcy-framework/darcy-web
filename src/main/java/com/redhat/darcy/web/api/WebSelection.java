@@ -22,14 +22,7 @@ package com.redhat.darcy.web.api;
 import com.redhat.darcy.ui.api.ContextSelection;
 import com.redhat.darcy.ui.api.ElementSelection;
 import com.redhat.darcy.ui.api.Locator;
-import com.redhat.darcy.web.api.elements.HtmlButton;
-import com.redhat.darcy.web.api.elements.HtmlElement;
-import com.redhat.darcy.web.api.elements.HtmlFileSelect;
-import com.redhat.darcy.web.api.elements.HtmlLabel;
-import com.redhat.darcy.web.api.elements.HtmlLink;
-import com.redhat.darcy.web.api.elements.HtmlSelect;
-import com.redhat.darcy.web.api.elements.HtmlText;
-import com.redhat.darcy.web.api.elements.HtmlTextInput;
+import com.redhat.darcy.web.api.elements.*;
 
 import java.util.List;
 
@@ -118,5 +111,21 @@ public interface WebSelection extends ContextSelection, ElementSelection {
 
     default List<HtmlText> htmlTexts(Locator locator) {
         return elementsOfType(HtmlText.class, locator);
+    }
+
+    default HtmlCheckbox htmlCheckbox(Locator locator) {
+        return elementOfType(HtmlCheckbox.class, locator);
+    }
+
+    default List<HtmlCheckbox> htmlCheckboxes(Locator locator) {
+        return elementsOfType(HtmlCheckbox.class, locator);
+    }
+
+    default HtmlRadio htmlRadio(Locator locator) {
+        return elementOfType(HtmlRadio.class, locator);
+    }
+
+    default List<HtmlRadio> htmlRadios(Locator locator) {
+        return elementsOfType(HtmlRadio.class, locator);
     }
 }

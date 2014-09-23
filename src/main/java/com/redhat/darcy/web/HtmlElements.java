@@ -21,13 +21,7 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.Elements;
 import com.redhat.darcy.ui.api.Locator;
-import com.redhat.darcy.web.api.elements.HtmlButton;
-import com.redhat.darcy.web.api.elements.HtmlElement;
-import com.redhat.darcy.web.api.elements.HtmlFileSelect;
-import com.redhat.darcy.web.api.elements.HtmlLabel;
-import com.redhat.darcy.web.api.elements.HtmlLink;
-import com.redhat.darcy.web.api.elements.HtmlSelect;
-import com.redhat.darcy.web.api.elements.HtmlTextInput;
+import com.redhat.darcy.web.api.elements.*;
 
 import java.util.List;
 
@@ -94,5 +88,21 @@ public abstract class HtmlElements extends Elements {
 
     public static List<HtmlSelect> htmlSelects(Locator locator) {
         return elements(HtmlSelect.class, locator);
+    }
+
+    public static HtmlCheckbox htmlCheckbox(Locator locator) {
+        return element(HtmlCheckbox.class, locator);
+    }
+
+    public static List<HtmlCheckbox> htmlCheckboxes(Locator locator) {
+        return elements(HtmlCheckbox.class, locator);
+    }
+
+    public static HtmlRadio htmlRadio(Locator locator) {
+        return element(HtmlRadio.class, locator);
+    }
+
+    public static List<HtmlRadio> htmlRadios(Locator locator) {
+        return elements(HtmlRadio.class, locator);
     }
 }
