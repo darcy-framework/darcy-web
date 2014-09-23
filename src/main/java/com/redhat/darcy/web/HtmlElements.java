@@ -105,4 +105,20 @@ public abstract class HtmlElements extends Elements {
     public static List<HtmlRadio> htmlRadios(Locator locator) {
         return elements(HtmlRadio.class, locator);
     }
+
+    public static HtmlDateSelect htmlDateSelect(Locator locator) {
+        return element(HtmlDateSelect.class, locator);
+    }
+
+    public static List<HtmlDateSelect> htmlDateSelects(Locator locator) {
+        return elements(HtmlDateSelect.class, locator);
+    }
+
+    public static HtmlMultiSelect htmlMultiSelect(Locator locator) {
+        return element(HtmlMultiSelect.class, locator);
+    }
+
+    public static List<HtmlMultiSelect> htmlMultiSelects(Locator locator) {
+        return elements(HtmlMultiSelect.class, locator);
+    }
 }
