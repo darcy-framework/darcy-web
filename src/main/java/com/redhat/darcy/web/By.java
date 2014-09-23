@@ -21,10 +21,12 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.api.Context;
 import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.web.internal.FindsByClassName;
 import com.redhat.darcy.web.internal.FindsByCss;
 import com.redhat.darcy.web.internal.FindsByHtmlTag;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Adds some web-specific {@link Locator}s to the default {@link com.redhat.darcy.ui.By} options.
@@ -36,6 +38,10 @@ public abstract class By extends com.redhat.darcy.ui.By {
     
     public static Locator htmlTag(String tag) {
         return new ByHtmlTag(tag);
+    }
+
+    public static Locator className(String className) {
+        return new ByClassName(className);
     }
     
     public static class ByCss implements Locator {
@@ -74,5 +80,23 @@ public abstract class By extends com.redhat.darcy.ui.By {
             return ((FindsByHtmlTag) context).findByHtmlTag(type, tag);
         }
         
+    }
+
+    private static class ByClassName implements Locator {
+        private final String className;
+
+        public ByClassName(String className) {
+            this.className = Objects.requireNonNull(className, "className");
+        }
+
+        @Override
+        public <T> List<T> findAll(Class<T> type, Context context) {
+            return ((FindsByClassName) context).findAllByClassName(type, className);
+        }
+
+        @Override
+        public <T> T find(Class<T> type, Context context) {
+            return ((FindsByClassName) context).findByClassName(type, className);
+        }
     }
 }
