@@ -47,7 +47,7 @@ import java.util.Set;
  *
  * <p>Example usage:
  *
- * <code><pre>
+ * <pre><code>
  *     import static org.hamcrest.Matchers.equalTo;
  *
  *     public class Staff extends AbstractView {
@@ -72,7 +72,7 @@ import java.util.Set;
  *             }
  *         }
  *     }
- * </pre></code>
+ * </code></pre>
  *
  * @param <T> The type that is extending this class.
  */
