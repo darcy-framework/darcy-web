@@ -25,12 +25,9 @@ import com.redhat.darcy.ui.AbstractViewElement;
 import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Table;
-import com.redhat.darcy.ui.internal.ViewList;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
-import com.redhat.darcy.web.api.elements.HtmlLink;
 
-import java.util.List;
 import java.util.Set;
 
 /**
