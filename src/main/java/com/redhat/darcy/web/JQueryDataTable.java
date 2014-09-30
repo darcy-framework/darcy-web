@@ -20,6 +20,7 @@
 package com.redhat.darcy.web;
 
 import static com.redhat.darcy.ui.Elements.label;
+import static com.redhat.darcy.ui.matchers.DarcyMatchers.loaded;
 import static com.redhat.synq.Synq.after;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -30,7 +31,6 @@ import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Label;
 import com.redhat.darcy.ui.api.elements.PaginatedSortableTable;
-import com.redhat.darcy.ui.matchers.ViewMatchers;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlLink;
 
@@ -121,7 +121,7 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
             return (T) after(navFirst()::click)
                     .expectCallTo(this::getCurrentPage, equalTo(1))
                     .describedAs("the datatable to be at the first page")
-                    .andThenExpect(this, ViewMatchers.isLoaded())
+                    .andThenExpect(this, loaded())
                     .waitUpTo(2, ChronoUnit.MINUTES); // TODO make configurable
         }
 
@@ -147,7 +147,7 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
         return (T) after(navPrevious()::click)
                 .expectCallTo(this::getCurrentPage, equalTo(getCurrentPage() - 1))
                 .describedAs("the datatable's current page to be decremented by 1")
-                .andThenExpect(this, ViewMatchers.isLoaded())
+                .andThenExpect(this, loaded())
                 .waitUpTo(2, ChronoUnit.MINUTES); // TODO make configurable
     }
 
@@ -162,7 +162,7 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
         return (T) after(navNext()::click)
                 .expectCallTo(this::getCurrentPage, equalTo(getCurrentPage() + 1))
                 .describedAs("the datatable's current page to be incremented by 1")
-                .andThenExpect(this, ViewMatchers.isLoaded())
+                .andThenExpect(this, loaded())
                 .waitUpTo(2, ChronoUnit.MINUTES); // TODO make configurable
     }
 
