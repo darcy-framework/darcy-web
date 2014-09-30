@@ -40,7 +40,8 @@ import java.util.Set;
  * columns: externally visible instances of {@link com.redhat.darcy.ui.api.elements.Table.Column}
  * that have visibility into the table represented by this ViewElement by means of
  * {@link #byRowColumn(int, int)}, {@link #byHeader(int)}, and
- * {@link #byInner(com.redhat.darcy.ui.api.Locator...)}, and can therefore locate specific cells.
+ * {@link #byInner(com.redhat.darcy.ui.api.Locator, com.redhat.darcy.ui.api.Locator...)} , and can
+ * therefore locate specific cells.
  *
  * <p>Example usage:
  *
@@ -54,15 +55,15 @@ import java.util.Set;
  *         public HtmlLink getEmailLinkByStaff(String fullName) {
  *             return staffEmails.getRowsWhere(StaffEmailTable.FULL_NAME, equalTo((fullName)))
  *                     .findFirst()
- *                     .orElseThrow(() -> new AssertionError("No staff member found by name, " + fullName)
+ *                     .orElseThrow(() -&gt; new AssertionError("No staff member found by name, " + fullName)
  *                     .getCell(StaffEmailTable.EMAIL);
  *         }
  *
  *         private static class StaffEmailTable extends HtmlTable{@code<StaffEmailTable>} {
  *             private static final Column{@code<StaffEmailTable, String>} FULL_NAME =
- *                     (t, r) -> t.getContext().find().text(t.byRowColumn(r, 1).getText();
+ *                     (t, r) -&gt; t.getContext().find().text(t.byRowColumn(r, 1).getText();
  *             private static final Column{@code<StaffEmailTable, HtmlLink>} EMAIL =
- *                     (t, r) -> t.getContext().find().htmlLink(t.byRowColumn(r, 2);
+ *                     (t, r) -&gt; t.getContext().find().htmlLink(t.byRowColumn(r, 2);
  *
  *             private StaffEmailTable(By table) {
  *                 super(table);
