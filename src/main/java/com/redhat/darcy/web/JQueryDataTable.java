@@ -231,7 +231,8 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
      * Many elements within the wrapper div have ids in the format, ${table's_id}_${suffix}. This
      * itself is a locator strategy, implemented by this method. The returned locator can be used
      * by itself to find one of these elements. It does not need to be nested inside of
-     * {@link #byInner(com.redhat.darcy.ui.api.Locator...)} (it is already).
+     * {@link #byInner(com.redhat.darcy.ui.api.Locator, com.redhat.darcy.ui.api.Locator...)} (it is
+     * already).
      *
      * @param suffix The suffix to append after the inner table's id, plus an _, in the format,
      * ${table's_id}_${suffix}.
