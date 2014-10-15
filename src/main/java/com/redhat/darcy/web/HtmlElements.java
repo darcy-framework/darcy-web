@@ -21,7 +21,17 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.Elements;
 import com.redhat.darcy.ui.api.Locator;
-import com.redhat.darcy.web.api.elements.*;
+import com.redhat.darcy.web.api.elements.HtmlButton;
+import com.redhat.darcy.web.api.elements.HtmlCheckbox;
+import com.redhat.darcy.web.api.elements.HtmlDateInput;
+import com.redhat.darcy.web.api.elements.HtmlElement;
+import com.redhat.darcy.web.api.elements.HtmlFileSelect;
+import com.redhat.darcy.web.api.elements.HtmlLabel;
+import com.redhat.darcy.web.api.elements.HtmlLink;
+import com.redhat.darcy.web.api.elements.HtmlMultiSelect;
+import com.redhat.darcy.web.api.elements.HtmlRadio;
+import com.redhat.darcy.web.api.elements.HtmlSelect;
+import com.redhat.darcy.web.api.elements.HtmlTextInput;
 
 import java.util.List;
 
@@ -106,12 +116,12 @@ public abstract class HtmlElements extends Elements {
         return elements(HtmlRadio.class, locator);
     }
 
-    public static HtmlDateSelect htmlDateSelect(Locator locator) {
-        return element(HtmlDateSelect.class, locator);
+    public static HtmlDateInput htmlDateInput(Locator locator) {
+        return element(HtmlDateInput.class, locator);
     }
 
-    public static List<HtmlDateSelect> htmlDateSelects(Locator locator) {
-        return elements(HtmlDateSelect.class, locator);
+    public static List<HtmlDateInput> htmlDateInputs(Locator locator) {
+        return elements(HtmlDateInput.class, locator);
     }
 
     public static HtmlMultiSelect htmlMultiSelect(Locator locator) {
