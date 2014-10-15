@@ -27,6 +27,6 @@ import com.redhat.darcy.ui.api.elements.Findable;
 public interface Alert extends Findable {
     void accept();
     void dismiss();
-    void sendKeys(String text);
-    String readText();
+    void sendKeys(CharSequence text);
+    String getText();
 }
