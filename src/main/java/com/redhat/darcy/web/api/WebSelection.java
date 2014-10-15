@@ -23,10 +23,14 @@ import com.redhat.darcy.ui.api.ContextSelection;
 import com.redhat.darcy.ui.api.ElementSelection;
 import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.web.api.elements.HtmlButton;
+import com.redhat.darcy.web.api.elements.HtmlCheckbox;
+import com.redhat.darcy.web.api.elements.HtmlDateInput;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 import com.redhat.darcy.web.api.elements.HtmlFileSelect;
 import com.redhat.darcy.web.api.elements.HtmlLabel;
 import com.redhat.darcy.web.api.elements.HtmlLink;
+import com.redhat.darcy.web.api.elements.HtmlMultiSelect;
+import com.redhat.darcy.web.api.elements.HtmlRadio;
 import com.redhat.darcy.web.api.elements.HtmlSelect;
 import com.redhat.darcy.web.api.elements.HtmlText;
 import com.redhat.darcy.web.api.elements.HtmlTextInput;
@@ -118,5 +122,37 @@ public interface WebSelection extends ContextSelection, ElementSelection {
 
     default List<HtmlText> htmlTexts(Locator locator) {
         return elementsOfType(HtmlText.class, locator);
+    }
+
+    default HtmlCheckbox htmlCheckbox(Locator locator) {
+        return elementOfType(HtmlCheckbox.class, locator);
+    }
+
+    default List<HtmlCheckbox> htmlCheckboxes(Locator locator) {
+        return elementsOfType(HtmlCheckbox.class, locator);
+    }
+
+    default HtmlRadio htmlRadio(Locator locator) {
+        return elementOfType(HtmlRadio.class, locator);
+    }
+
+    default List<HtmlRadio> htmlRadios(Locator locator) {
+        return elementsOfType(HtmlRadio.class, locator);
+    }
+
+    default HtmlMultiSelect htmlMultiSelect(Locator locator) {
+        return elementOfType(HtmlMultiSelect.class, locator);
+    }
+
+    default List<HtmlMultiSelect> htmlMultiSelects(Locator locator) {
+        return elementsOfType(HtmlMultiSelect.class, locator);
+    }
+
+    default HtmlDateInput htmlDateInput(Locator locator) {
+        return elementOfType(HtmlDateInput.class, locator);
+    }
+
+    default List<HtmlDateInput> htmlDateInputs(Locator locator) {
+        return elementsOfType(HtmlDateInput.class, locator);
     }
 }
