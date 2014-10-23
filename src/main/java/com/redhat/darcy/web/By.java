@@ -24,6 +24,7 @@ import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.web.internal.FindsByClassName;
 import com.redhat.darcy.web.internal.FindsByCss;
 import com.redhat.darcy.web.internal.FindsByHtmlTag;
+import com.redhat.darcy.web.internal.FindsByValue;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +44,11 @@ public abstract class By extends com.redhat.darcy.ui.By {
     public static Locator className(String className) {
         return new ByClassName(className);
     }
-    
+
+    public static Locator value(String value) {
+        return new ByValue(value);
+    }
+
     public static class ByCss implements Locator {
         private final String css;
         
@@ -61,6 +66,24 @@ public abstract class By extends com.redhat.darcy.ui.By {
             return ((FindsByCss) context).findByCss(type, css);
         }
         
+    }
+
+    public static class ByValue implements Locator {
+        private final String value;
+
+        public ByValue(String value) {
+            this.value = Objects.requireNonNull(value, "value");
+        }
+
+        @Override
+        public <T> List<T> findAll(Class<T> type, Context context) {
+            return ((FindsByValue) context).findAllByValue(type, value);
+        }
+
+        @Override
+        public <T> T find(Class<T> type, Context context) {
+            return ((FindsByValue) context).findByValue(type, value);
+        }
     }
     
     public static class ByHtmlTag implements Locator {
