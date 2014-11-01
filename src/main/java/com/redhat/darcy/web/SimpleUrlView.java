@@ -24,8 +24,11 @@ import com.redhat.darcy.ui.internal.Initializer;
 import com.redhat.darcy.util.ReflectionUtil;
 import com.redhat.darcy.web.api.Browser;
 import com.redhat.darcy.web.api.ViewUrl;
+import org.hamcrest.Matcher;
 
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -38,6 +41,8 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
 
     private final String url;
     private final Initializer initializer;
+
+    private UrlMatcher matchCondition = (actual, expected)->actual.equals(expected);
 
     private ElementContext context;
 
@@ -62,8 +67,8 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
     protected void onSetContext() {}
 
     @Override
-    public ElementContext getContext() {
-        return context;
+    public Browser getContext() {
+        return (Browser) context;
     }
 
     /**
@@ -72,7 +77,7 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
      */
     @Override
     public boolean isLoaded() {
-        return url.equals(((Browser) context).getCurrentUrl());
+        return matchCondition.matches(getContext().getCurrentUrl(), url);
     }
 
     /**
@@ -91,5 +96,37 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
     @Override
     public SimpleUrlView destination() {
         return this;
+    }
+
+    /**
+     * Optional condition to verify the browser URL matches expected URL.
+     *
+     * This condition can be used if the actual URL is different from requested (eg. due to appended cookies or URL rewrites)
+     * @param matcher
+     * @return
+     */
+    public SimpleUrlView withMatcher(UrlMatcher matcher) {
+        this.matchCondition = matcher;
+        return this;
+    }
+
+    /**
+     * Optional condition to verify the browser URL matches expected URL.
+     *
+     * Analogous to {@link com.redhat.darcy.web.SimpleUrlView#withMatcher(com.redhat.darcy.web.SimpleUrlView.UrlMatcher)},
+     * but accepting a Hamcrest matcher.
+     * @param matcher
+     * @return
+     */
+    public SimpleUrlView withMatcher(Matcher<String> matcher) {
+        this.matchCondition = (actual, expected) -> matcher.matches(actual);
+        return this;
+    }
+
+    /**
+     * A condition that should be evaluated to verify the browser's URL matches requested URL.
+     */
+    public interface UrlMatcher {
+        public boolean matches(String actualUrl, String expectedUrl);
     }
 }
