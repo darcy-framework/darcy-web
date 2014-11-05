@@ -48,8 +48,8 @@ public abstract class By extends com.redhat.darcy.ui.By {
         return new ByAttribute("value", value);
     }
 
-    public static Locator labelFor(String value) {
-        return new ByAttribute("for", value);
+    public static Locator labelFor(String inputId) {
+        return new ByAttribute("for", inputId);
     }
 
     public static class ByCss implements Locator {
