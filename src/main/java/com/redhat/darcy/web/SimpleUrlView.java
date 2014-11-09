@@ -24,12 +24,11 @@ import com.redhat.darcy.ui.internal.Initializer;
 import com.redhat.darcy.util.ReflectionUtil;
 import com.redhat.darcy.web.api.Browser;
 import com.redhat.darcy.web.api.ViewUrl;
-import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 
 import java.lang.reflect.Field;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * An implementation of View used to represent pages where the only load condition is the URL.
@@ -42,12 +41,13 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
     private final String url;
     private final Initializer initializer;
 
-    private UrlMatcher matchCondition = (actual, expected)->actual.equals(expected);
+    private Predicate<String> matchCondition;
 
     private ElementContext context;
 
     public SimpleUrlView(String url) {
         this.url = url;
+        this.matchCondition = Matchers.equalTo(url)::matches;
 
         List<Field> declaredFields = ReflectionUtil.getAllDeclaredFields(this);
         initializer = new Initializer(this, declaredFields);
@@ -77,7 +77,7 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
      */
     @Override
     public boolean isLoaded() {
-        return matchCondition.matches(getContext().getCurrentUrl(), url);
+        return matchCondition.test(getContext().getCurrentUrl());
     }
 
     /**
@@ -105,28 +105,8 @@ public class SimpleUrlView implements View, ViewUrl<SimpleUrlView> {
      * @param matcher
      * @return
      */
-    public SimpleUrlView withMatcher(UrlMatcher matcher) {
+    public SimpleUrlView withMatcher(Predicate<String> matcher) {
         this.matchCondition = matcher;
         return this;
-    }
-
-    /**
-     * Optional condition to verify the browser URL matches expected URL.
-     *
-     * Analogous to {@link com.redhat.darcy.web.SimpleUrlView#withMatcher(com.redhat.darcy.web.SimpleUrlView.UrlMatcher)},
-     * but accepting a Hamcrest matcher.
-     * @param matcher
-     * @return
-     */
-    public SimpleUrlView withMatcher(Matcher<String> matcher) {
-        this.matchCondition = (actual, expected) -> matcher.matches(actual);
-        return this;
-    }
-
-    /**
-     * A condition that should be evaluated to verify the browser's URL matches requested URL.
-     */
-    public interface UrlMatcher {
-        public boolean matches(String actualUrl, String expectedUrl);
     }
 }
