@@ -28,6 +28,7 @@ import com.redhat.darcy.ui.api.elements.Table;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -139,7 +140,7 @@ public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement 
     }
 
     @Override
-    public Set<String> getClasses() {
+    public List<String> getClasses() {
         return ((HtmlElement) parent).getClasses();
     }
 
