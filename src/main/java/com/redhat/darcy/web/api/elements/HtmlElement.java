@@ -23,7 +23,7 @@ import com.redhat.darcy.ui.api.elements.Clickable;
 import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.HasAttributes;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Elements that wrap specific elements in an HTML document are expected to implement this
@@ -49,5 +49,5 @@ public interface HtmlElement extends Element, HasAttributes, Clickable {
     /**
      * Organizes the space delimited list of CSS classes for the element this refers to into a set.
      */
-    Set<String> getClasses();
+    List<String> getClasses();
 }
