@@ -21,6 +21,7 @@ package com.redhat.darcy.web;
 
 import com.redhat.darcy.ui.api.Context;
 import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.ui.api.elements.Findable;
 import com.redhat.darcy.web.internal.FindsByClassName;
 import com.redhat.darcy.web.internal.FindsByCss;
 import com.redhat.darcy.web.internal.FindsByHtmlTag;
@@ -60,12 +61,12 @@ public abstract class By extends com.redhat.darcy.ui.By {
         }
 
         @Override
-        public <T> List<T> findAll(Class<T> type, Context context) {
+        public <T extends Findable> List<T> findAll(Class<T> type, Context context) {
             return ((FindsByCss) context).findAllByCss(type, css);
         }
 
         @Override
-        public <T> T find(Class<T> type, Context context) {
+        public <T extends Findable> T find(Class<T> type, Context context) {
             return ((FindsByCss) context).findByCss(type, css);
         }
         
@@ -79,12 +80,12 @@ public abstract class By extends com.redhat.darcy.ui.By {
         }
 
         @Override
-        public <T> List<T> findAll(Class<T> type, Context context) {
+        public <T extends Findable> List<T> findAll(Class<T> type, Context context) {
             return ((FindsByHtmlTag) context).findAllByHtmlTag(type, tag);
         }
 
         @Override
-        public <T> T find(Class<T> type, Context context) {
+        public <T extends Findable> T find(Class<T> type, Context context) {
             return ((FindsByHtmlTag) context).findByHtmlTag(type, tag);
         }
         
@@ -98,12 +99,12 @@ public abstract class By extends com.redhat.darcy.ui.By {
         }
 
         @Override
-        public <T> List<T> findAll(Class<T> type, Context context) {
+        public <T extends Findable> List<T> findAll(Class<T> type, Context context) {
             return ((FindsByClassName) context).findAllByClassName(type, className);
         }
 
         @Override
-        public <T> T find(Class<T> type, Context context) {
+        public <T extends Findable> T find(Class<T> type, Context context) {
             return ((FindsByClassName) context).findByClassName(type, className);
         }
     }

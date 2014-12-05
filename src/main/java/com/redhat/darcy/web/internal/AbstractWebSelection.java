@@ -21,6 +21,7 @@ package com.redhat.darcy.web.internal;
 
 import com.redhat.darcy.ui.api.Context;
 import com.redhat.darcy.ui.api.Locator;
+import com.redhat.darcy.ui.api.elements.Findable;
 import com.redhat.darcy.ui.internal.DefaultElementSelection;
 import com.redhat.darcy.web.api.Alert;
 import com.redhat.darcy.web.api.WebContext;
@@ -28,8 +29,7 @@ import com.redhat.darcy.web.api.WebSelection;
 
 import java.util.List;
 
-public abstract class AbstractWebSelection extends DefaultElementSelection
-        implements WebSelection {
+public abstract class AbstractWebSelection extends DefaultElementSelection implements WebSelection {
     private final WebContext webContext;
 
     public AbstractWebSelection(WebContext webContext) {
@@ -39,12 +39,13 @@ public abstract class AbstractWebSelection extends DefaultElementSelection
     }
 
     @Override
-    public <T extends Context> T contextOfType(Class<T> contextType, Locator locator) {
+    public <T extends Context & Findable> T contextOfType(Class<T> contextType, Locator locator) {
         return locator.find(contextType, webContext);
     }
 
     @Override
-    public <T extends Context> List<T> contextsOfType(Class<T> contextType, Locator locator) {
+    public <T extends Context & Findable> List<T> contextsOfType(Class<T> contextType,
+            Locator locator) {
         return locator.findAll(contextType, webContext);
     }
 
