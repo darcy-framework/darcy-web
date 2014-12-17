@@ -21,5 +21,5 @@ package com.redhat.darcy.web.api.elements;
 
 import com.redhat.darcy.ui.api.elements.Select;
 
-public interface HtmlSelect extends HtmlElement, Select {
+public interface HtmlSelect extends HtmlElement, Select<HtmlSelectOption> {
 }
