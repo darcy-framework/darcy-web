@@ -31,6 +31,8 @@ import com.redhat.darcy.web.api.elements.HtmlLink;
 import com.redhat.darcy.web.api.elements.HtmlMultiSelect;
 import com.redhat.darcy.web.api.elements.HtmlRadio;
 import com.redhat.darcy.web.api.elements.HtmlSelect;
+import com.redhat.darcy.web.api.elements.HtmlSelectOption;
+import com.redhat.darcy.web.api.elements.HtmlText;
 import com.redhat.darcy.web.api.elements.HtmlTextInput;
 
 import java.util.List;
@@ -130,5 +132,21 @@ public abstract class HtmlElements extends Elements {
 
     public static List<HtmlMultiSelect> htmlMultiSelects(Locator locator) {
         return elements(HtmlMultiSelect.class, locator);
+    }
+
+    public static HtmlText htmlText(Locator locator) {
+        return element(HtmlText.class, locator);
+    }
+
+    public static List<HtmlText> htmlTexts(Locator locator) {
+        return elements(HtmlText.class, locator);
+    }
+
+    public static HtmlSelectOption htmlSelectOption(Locator locator) {
+        return element(HtmlSelectOption.class, locator);
+    }
+
+    public static List<HtmlSelectOption> htmlSelectOptions(Locator locator) {
+        return elements(HtmlSelectOption.class, locator);
     }
 }
