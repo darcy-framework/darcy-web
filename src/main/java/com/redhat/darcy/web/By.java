@@ -69,14 +69,40 @@ public abstract class By extends com.redhat.darcy.ui.By {
         public <T extends Findable> T find(Class<T> type, Context context) {
             return ((FindsByCss) context).findByCss(type, css);
         }
-        
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            ByCss byCss = (ByCss) o;
+
+            return css.equals(byCss.css);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return css.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "ByCss{" +
+                    "css='" + css + '\'' +
+                    '}';
+        }
     }
     
     public static class ByHtmlTag implements Locator {
         private final String tag;
         
         public ByHtmlTag(String tag) {
-            this.tag = tag;
+            this.tag = Objects.requireNonNull(tag, "tag");
         }
 
         @Override
@@ -88,7 +114,26 @@ public abstract class By extends com.redhat.darcy.ui.By {
         public <T extends Findable> T find(Class<T> type, Context context) {
             return ((FindsByHtmlTag) context).findByHtmlTag(type, tag);
         }
-        
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            ByHtmlTag byHtmlTag = (ByHtmlTag) o;
+
+            return tag.equals(byHtmlTag.tag);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return tag.hashCode();
+        }
     }
 
     private static class ByClassName implements Locator {
@@ -106,6 +151,33 @@ public abstract class By extends com.redhat.darcy.ui.By {
         @Override
         public <T extends Findable> T find(Class<T> type, Context context) {
             return ((FindsByClassName) context).findByClassName(type, className);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            ByClassName that = (ByClassName) o;
+
+            return className.equals(that.className);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return className.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "ByClassName{" +
+                    "className='" + className + '\'' +
+                    '}';
         }
     }
 }
