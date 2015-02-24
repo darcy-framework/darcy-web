@@ -74,10 +74,9 @@ public interface Browser extends WebContext, Findable {
     /**
      * Constructs an {@link com.redhat.synq.Event} that will opens the URL and block until the
      * associated {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl}
-     * parameter, and then calls {@link Event#waitUpTo(java.time.Duration)} to open the url and
-     * block the thread until the view is loaded. Will block the thread for a maximum of the
-     * specified duration, at which point a {@link com.redhat.synq.TimeoutException} will be
-     * thrown.
+     * parameter, and then calls {@link Event#waitUpTo(java.time.Duration)} to open the url. Will
+     * block the thread for a maximum of the specified duration, at which point a
+     * {@link com.redhat.synq.TimeoutException} will be thrown.
      * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
      * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
      * {@link #open(String, com.redhat.darcy.ui.api.View)}.
@@ -92,9 +91,8 @@ public interface Browser extends WebContext, Findable {
      * Constructs an {@link com.redhat.synq.Event} that will opens the URL and block until the
      * associated {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl}
      * parameter, and then calls {@link Event#waitUpTo(java.time.Duration)} with a default value to
-     * open the url and block the thread until the view is loaded. Will block the thread for a
-     * maximum of the two minutes, at which point a {@link com.redhat.synq.TimeoutException} will be
-     * thrown.
+     * open the url. Will block the thread for a maximum of the two minutes, at which point a
+     * {@link com.redhat.synq.TimeoutException} will be thrown.
      * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
      * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
      * {@link #open(String, com.redhat.darcy.ui.api.View)}.
