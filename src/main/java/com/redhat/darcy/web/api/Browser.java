@@ -102,6 +102,8 @@ public interface Browser extends WebContext, Findable {
      */
     <T extends View> Event<T> refresh(T destination);
 
+    CookieManager cookies();
+
     void close();
 
     void closeAll();
