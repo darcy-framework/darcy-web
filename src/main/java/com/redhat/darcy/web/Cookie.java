@@ -179,15 +179,12 @@ public class Cookie {
                 (domain == null ? "" : "; domain=" + domain) + (isSecure ? ";secure;" : "");
     }
 
-    /**
-     * Two cookies are equal if the name and value match
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Cookie)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
@@ -196,8 +193,26 @@ public class Cookie {
         if (!name.equals(cookie.name)) {
             return false;
         }
+        if (!value.equals(cookie.value)) {
+            return false;
+        }
+        if (domain != null ? !domain.equals(cookie.domain) : cookie.domain != null) {
+            return false;
+        }
+        if (expiry != null ? !expiry.equals(cookie.expiry) : cookie.expiry != null) {
+            return false;
+        }
+        if (path != null ? !path.equals(cookie.path) : cookie.path != null) {
+            return false;
+        }
+        if (isHttpOnly != cookie.isHttpOnly) {
+            return false;
+        }
+        if (isSecure != cookie.isSecure) {
+            return false;
+        }
 
-        return !(value != null ? !value.equals(cookie.value) : cookie.value != null);
+        return true;
     }
 
     @Override
