@@ -21,6 +21,7 @@ package com.redhat.darcy.web.api;
 
 import com.redhat.darcy.web.Cookie;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface CookieManager{
@@ -31,8 +32,8 @@ public interface CookieManager{
     }
     void deleteAll();
     Set<Cookie> getAll();
-    Cookie get(String name);
-    default Cookie get(Cookie cookie) {
+    Optional<Cookie> get(String name);
+    default Optional<Cookie> get(Cookie cookie) {
         return get(cookie.getName());
     }
 }
