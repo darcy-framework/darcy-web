@@ -21,6 +21,7 @@ package com.redhat.darcy.web;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Cookie {
     private final String name;
@@ -92,12 +93,12 @@ public class Cookie {
             boolean isSecure, boolean isHttpOnly) {
         this.name = name;
         this.value = value;
-        this.path = path == null || "".equals(path) ? "/" : path;
+        this.path = path == null || path.isEmpty() ? "/" : path;
 
         this.domain = stripPort(domain);
         this.isSecure = isSecure;
         this.isHttpOnly = isHttpOnly;
-        this.expiry = expiry;
+        this.expiry = expiry == null ? null : expiry.truncatedTo(ChronoUnit.SECONDS);
     }
 
     /**
