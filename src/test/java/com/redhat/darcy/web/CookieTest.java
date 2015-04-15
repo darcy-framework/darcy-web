@@ -81,4 +81,10 @@ public class CookieTest {
         Cookie cookie = new Cookie("name", "value");
         assertFalse(cookie.isHttpOnly());
     }
+
+    @Test
+    public void shouldTruncateExpiryToSeconds() {
+        Cookie cookie = new Cookie("name", "value", "", "/", LocalDateTime.now());
+        assertTrue(cookie.getExpiry().getNano() == 0);
+    }
 }
