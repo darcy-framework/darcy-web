@@ -98,12 +98,7 @@ public class Cookie {
         this.domain = stripPort(domain);
         this.isSecure = isSecure;
         this.isHttpOnly = isHttpOnly;
-
-        if(expiry != null) {
-            expiry = expiry.truncatedTo(ChronoUnit.SECONDS);
-        }
-
-        this.expiry = expiry;
+        this.expiry = expiry == null ? null : expiry.truncatedTo(ChronoUnit.SECONDS);
     }
 
     /**
