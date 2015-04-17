@@ -72,34 +72,31 @@ public interface Browser extends WebContext, Findable {
     <T extends View> Event<T> open(String url, T destination);
 
     /**
-     * Constructs an {@link com.redhat.synq.Event} that will opens the URL and block until the
-     * associated {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl}
-     * parameter, and then calls {@link Event#waitUpTo(java.time.Duration)} to open the url. Will
-     * block the thread for a maximum of the specified duration, at which point a
-     * {@link com.redhat.synq.TimeoutException} will be thrown.
+     * Opens the URL and immediately blocks the thread for a maximum of the specified
+     * duration, after which a {@link com.redhat.synq.TimeoutException} will be thrown.
      * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
      * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
      * {@link #open(String, com.redhat.darcy.ui.api.View)}.
      * @param duration Maximum specified duration of the view loading
      * @return The awaited view once it has met all criteria for loading
      */
-    default <T extends View> T openAndWait(ViewUrl<T> viewUrl, Duration duration) {
+    default <T extends View> T openAndWaitUpTo(ViewUrl<T> viewUrl, Duration duration) {
         return open(viewUrl).waitUpTo(duration);
     }
 
     /**
-     * Constructs an {@link com.redhat.synq.Event} that will opens the URL and block until the
-     * associated {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl}
-     * parameter, and then calls {@link Event#waitUpTo(java.time.Duration)} with a default value to
-     * open the url. Will block the thread for a maximum of the two minutes, at which point a
-     * {@link com.redhat.synq.TimeoutException} will be thrown.
+     * Opens the URL and immediately blocks the thread for a maximum of the duration of the
+     * specified amount of units, after which a {@link com.redhat.synq.TimeoutException} will be
+     * thrown.
      * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
      * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
      * {@link #open(String, com.redhat.darcy.ui.api.View)}.
+     * @param amount The amount of the duration, expressed in units
+     * @param unit The unit the duration is measured in
      * @return The awaited view once it has met all criteria for loading
      */
-    default <T extends View> T openAndWait(ViewUrl<T> viewUrl) {
-        return open(viewUrl).waitUpTo(Duration.of(2, ChronoUnit.MINUTES));
+    default <T extends View> T openAndWaitUpTo(ViewUrl<T> viewUrl, Long amount, ChronoUnit unit) {
+        return open(viewUrl).waitUpTo(Duration.of(amount, unit));
     }
 
     /**
