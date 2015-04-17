@@ -22,6 +22,10 @@ package com.redhat.darcy.web.api;
 import com.redhat.darcy.ui.api.View;
 import com.redhat.darcy.ui.api.elements.Findable;
 import com.redhat.synq.Event;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
 /**
  * Abstracts all of the interactions a user might make with a browser.
  */
@@ -66,6 +70,34 @@ public interface Browser extends WebContext, Findable {
      * @return An {@link com.redhat.synq.Event} that can be further configured and awaited.
      */
     <T extends View> Event<T> open(String url, T destination);
+
+    /**
+     * Opens the URL and immediately blocks the thread for a maximum of the specified
+     * duration, after which a {@link com.redhat.synq.TimeoutException} will be thrown.
+     * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
+     * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
+     * {@link #open(String, com.redhat.darcy.ui.api.View)}.
+     * @param duration Maximum specified duration of the view loading
+     * @return The awaited view once it has met all criteria for loading
+     */
+    default <T extends View> T openAndWaitUpTo(ViewUrl<T> viewUrl, Duration duration) {
+        return open(viewUrl).waitUpTo(duration);
+    }
+
+    /**
+     * Opens the URL and immediately blocks the thread for a maximum of the duration of the
+     * specified amount of units, after which a {@link com.redhat.synq.TimeoutException} will be
+     * thrown.
+     * @param viewUrl If you don't have a {@link com.redhat.darcy.web.api.ViewUrl} instance, but you
+     * know the url and the resulting {@link com.redhat.darcy.ui.api.View}, see
+     * {@link #open(String, com.redhat.darcy.ui.api.View)}.
+     * @param amount The amount of the duration, expressed in units
+     * @param unit The unit the duration is measured in
+     * @return The awaited view once it has met all criteria for loading
+     */
+    default <T extends View> T openAndWaitUpTo(ViewUrl<T> viewUrl, Long amount, ChronoUnit unit) {
+        return open(viewUrl).waitUpTo(Duration.of(amount, unit));
+    }
 
     /**
      * @return the current URL string this Browser window is pointing to.
