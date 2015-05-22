@@ -80,7 +80,7 @@ public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement 
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
     private final HtmlElement headerTag = htmlElement(byInner(By.htmlTag("thead")));
 
-    public HtmlTable(Locator parent) { super(parent); }
+    public HtmlTable(Locator parent) { super(HtmlElement.class, parent); }
     public HtmlTable(Element parent) { super(parent); }
 
     @Override

@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
  *
  * @param <T> The type that is extending this class.
  */
-public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement
+public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement<T>
         implements PaginatedSortableTable<T> {
     private static final Pattern SHOW_START = Pattern.compile(".*?([\\d,]+).*?[\\d,]+");
     private static final Pattern SHOW_END = Pattern.compile(".*?[\\d,]+.*?([\\d,]+)");
@@ -86,8 +86,9 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
     /**
      * @param parent The wrapper div around the table element.
      */
+    @SuppressWarnings("unchecked")
     public JQueryDataTable(Element parent) {
-        super(parent);
+        super((T) parent);
     }
 
     @Override
