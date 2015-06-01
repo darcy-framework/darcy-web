@@ -32,6 +32,7 @@ import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Label;
 import com.redhat.darcy.ui.api.elements.PaginatedSortableTable;
 import com.redhat.darcy.web.api.WebContext;
+import com.redhat.darcy.web.api.elements.HtmlElement;
 import com.redhat.darcy.web.api.elements.HtmlLink;
 
 import java.time.temporal.ChronoUnit;
@@ -56,7 +57,7 @@ import java.util.regex.Pattern;
  *
  * @param <T> The type that is extending this class.
  */
-public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement<T>
+public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends AbstractViewElement<HtmlElement>
         implements PaginatedSortableTable<T> {
     private static final Pattern SHOW_START = Pattern.compile(".*?([\\d,]+).*?[\\d,]+");
     private static final Pattern SHOW_END = Pattern.compile(".*?[\\d,]+.*?([\\d,]+)");
@@ -80,15 +81,14 @@ public abstract class JQueryDataTable<T extends JQueryDataTable<T>> extends Abst
     // TODO: It would be nice if clients could just locate their table and not the wrapper div
     // that jquery datatable plugin generates.
     public JQueryDataTable(Locator parent) {
-        super(parent);
+        super(HtmlElement.class, parent);
     }
 
     /**
      * @param parent The wrapper div around the table element.
      */
-    @SuppressWarnings("unchecked")
-    public JQueryDataTable(Element parent) {
-        super((T) parent);
+    public JQueryDataTable(HtmlElement parent) {
+        super(parent);
     }
 
     @Override

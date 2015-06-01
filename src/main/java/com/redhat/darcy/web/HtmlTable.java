@@ -23,13 +23,11 @@ import static com.redhat.darcy.web.HtmlElements.htmlElement;
 
 import com.redhat.darcy.ui.AbstractViewElement;
 import com.redhat.darcy.ui.api.Locator;
-import com.redhat.darcy.ui.api.elements.Element;
 import com.redhat.darcy.ui.api.elements.Table;
 import com.redhat.darcy.web.api.WebContext;
 import com.redhat.darcy.web.api.elements.HtmlElement;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * An extendable base {@link com.redhat.darcy.ui.api.ViewElement} describing simple, semantic HTML
@@ -75,13 +73,13 @@ import java.util.Set;
  *
  * @param <T> The type that is extending this class.
  */
-public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement implements Table<T>,
+public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement<HtmlElement> implements Table<T>,
         HtmlElement {
     private final HtmlElement bodyTag = htmlElement(byInner(By.htmlTag("tbody")));
     private final HtmlElement headerTag = htmlElement(byInner(By.htmlTag("thead")));
 
     public HtmlTable(Locator parent) { super(HtmlElement.class, parent); }
-    public HtmlTable(Element parent) { super(parent); }
+    public HtmlTable(HtmlElement parent) { super(parent); }
 
     @Override
     public WebContext getContext() {
@@ -126,27 +124,27 @@ public abstract class HtmlTable<T extends Table<T>> extends AbstractViewElement 
 
     @Override
     public void click() {
-        ((HtmlElement) parent).click();
+        parent.click();
     }
 
     @Override
     public String getTagName() {
-        return ((HtmlElement) parent).getTagName();
+        return parent.getTagName();
     }
 
     @Override
     public String getCssValue(String property) {
-        return ((HtmlElement) parent).getCssValue(property);
+        return parent.getCssValue(property);
     }
 
     @Override
     public List<String> getClasses() {
-        return ((HtmlElement) parent).getClasses();
+        return parent.getClasses();
     }
 
     @Override
     public String getAttribute(String attribute) {
-        return ((HtmlElement) parent).getAttribute(attribute);
+        return parent.getAttribute(attribute);
     }
 
     /**
