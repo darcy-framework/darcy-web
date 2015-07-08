@@ -19,13 +19,11 @@
 
 package com.redhat.darcy.web.api;
 
-/**
- * Abstracts the basic functionality available for a frame or iFrame in a given browser.
- */
-public interface Frame extends FindableWebContext {
-    String getCurrentUrl();
-    String getSource();
+import com.redhat.darcy.ui.api.FindableElementContext;
+import com.redhat.darcy.ui.api.FindableParentContext;
 
+public interface FindableWebContext extends WebContext, FindableElementContext,
+        FindableParentContext {
     @Override
     WebSelection find();
 }
