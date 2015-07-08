@@ -19,12 +19,13 @@
 
 package com.redhat.darcy.web.api;
 
-import com.redhat.darcy.ui.api.elements.Findable;
+import com.redhat.darcy.ui.api.FindableElementContext;
+import com.redhat.darcy.ui.api.FindableParentContext;
 
 /**
  * Abstracts the basic functionality available for a frame or iFrame in a given browser.
  */
-public interface Frame extends WebContext, Findable {
+public interface Frame extends WebContext, FindableElementContext, FindableParentContext {
     String getCurrentUrl();
     String getSource();
 
