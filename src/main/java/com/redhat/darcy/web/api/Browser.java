@@ -19,8 +19,9 @@
 
 package com.redhat.darcy.web.api;
 
+import com.redhat.darcy.ui.api.FindableElementContext;
+import com.redhat.darcy.ui.api.FindableParentContext;
 import com.redhat.darcy.ui.api.View;
-import com.redhat.darcy.ui.api.elements.Findable;
 import com.redhat.synq.Event;
 
 import java.time.Duration;
@@ -29,7 +30,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Abstracts all of the interactions a user might make with a browser.
  */
-public interface Browser extends WebContext, Findable {
+public interface Browser extends WebContext, FindableElementContext, FindableParentContext {
     /**
      * Constructs an {@link com.redhat.synq.Event} that will opens the URL and block until the
      * associated {@link com.redhat.darcy.ui.api.View} is loaded, as defined by the {@link ViewUrl}
