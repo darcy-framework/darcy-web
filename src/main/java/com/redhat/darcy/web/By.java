@@ -19,12 +19,17 @@
 
 package com.redhat.darcy.web;
 
+import com.redhat.darcy.ui.LocatorNotSupportedException;
 import com.redhat.darcy.ui.api.Context;
 import com.redhat.darcy.ui.api.Locator;
 import com.redhat.darcy.ui.api.elements.Findable;
 import com.redhat.darcy.web.internal.FindsByClassName;
 import com.redhat.darcy.web.internal.FindsByCss;
 import com.redhat.darcy.web.internal.FindsByHtmlTag;
+import com.redhat.darcy.web.internal.FindsByUrl;
+
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +56,14 @@ public abstract class By extends com.redhat.darcy.ui.By {
 
     public static Locator labelFor(String inputId) {
         return new ByAttribute("for", inputId);
+    }
+
+    public static ByUrl url(String url) {
+        return new ByUrl(Matchers.equalTo(url));
+    }
+
+    public static ByUrl url(Matcher<? super String> url) {
+        return new ByUrl(url);
     }
 
     public static class ByCss implements Locator {
@@ -177,6 +190,57 @@ public abstract class By extends com.redhat.darcy.ui.By {
         public String toString() {
             return "ByClassName{" +
                     "className='" + className + '\'' +
+                    '}';
+        }
+    }
+
+    public static class ByUrl implements Locator {
+        private final Matcher<? super String> urlMatcher;
+
+        public ByUrl(Matcher<? super String> urlMatcher) {
+            this.urlMatcher = Objects.requireNonNull(urlMatcher, "url");
+        }
+
+        @Override
+        public <T extends Findable> List<T> findAll(Class<T> type, Context context) {
+            try {
+                return ((FindsByUrl) context).findAllByUrl(type, urlMatcher);
+            } catch (ClassCastException e) {
+                throw new LocatorNotSupportedException(this);
+            }
+        }
+
+        @Override
+        public <T extends Findable> T find(Class<T> type, Context context) {
+            try {
+                return ((FindsByUrl) context).findByUrl(type, urlMatcher);
+            } catch (ClassCastException e) {
+                throw new LocatorNotSupportedException(this);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            ByUrl byUrl = (ByUrl) o;
+            // Known issue: most matchers do not properly implement equals
+            return Objects.equals(urlMatcher, byUrl.urlMatcher);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(urlMatcher);
+        }
+
+        @Override
+        public String toString() {
+            return "ByUrl{" +
+                    "urlMatcher='" + urlMatcher + '\'' +
                     '}';
         }
     }
