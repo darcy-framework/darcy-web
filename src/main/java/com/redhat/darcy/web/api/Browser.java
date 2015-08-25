@@ -139,6 +139,8 @@ public interface Browser extends FindableWebContext {
 
     void closeAll();
 
+    <T> T takeScreenshot(OutputType<T> target);
+
     @Override
     WebSelection find();
 }
