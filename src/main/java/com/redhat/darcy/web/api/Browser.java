@@ -22,6 +22,7 @@ package com.redhat.darcy.web.api;
 import com.redhat.darcy.ui.api.View;
 import com.redhat.synq.Event;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -139,7 +140,7 @@ public interface Browser extends FindableWebContext {
 
     void closeAll();
 
-    <T> T takeScreenshot(OutputType<T> target);
+    File takeScreenshot();
 
     @Override
     WebSelection find();
