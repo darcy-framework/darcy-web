@@ -155,7 +155,9 @@ public interface Browser extends FindableWebContext {
      */
     default void takeScreenshot(Path path) {
         try {
-            Files.createDirectories(path.getParent());
+            if (path.getParent() != null) {
+                Files.createDirectories(path.getParent());
+            }
             OutputStream fileOut = Files.newOutputStream(path);
             takeScreenshot(fileOut);
         } catch (IOException e) {
