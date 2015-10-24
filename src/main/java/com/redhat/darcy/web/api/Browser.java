@@ -22,7 +22,10 @@ package com.redhat.darcy.web.api;
 import com.redhat.darcy.ui.api.View;
 import com.redhat.synq.Event;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -140,7 +143,25 @@ public interface Browser extends FindableWebContext {
 
     void closeAll();
 
-    File takeScreenshot();
+    /**
+     * Takes a screenshot.
+     * @param outputStream The {@link OutputStream} to write the bytes to.
+     */
+    void takeScreenshot(OutputStream outputStream);
+
+    /**
+     * Takes a screenshot and writes it to a file.
+     * @param path The {@link Path} of the desired file destination.
+     */
+    default void takeScreenshot(Path path) {
+        try {
+            Files.createDirectories(path.getParent());
+            OutputStream fileOut = Files.newOutputStream(path);
+            takeScreenshot(fileOut);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     WebSelection find();
