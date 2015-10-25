@@ -19,6 +19,7 @@
 
 package com.redhat.darcy.web.api;
 
+import com.redhat.darcy.ui.DarcyException;
 import com.redhat.darcy.ui.api.View;
 import com.redhat.synq.Event;
 
@@ -161,7 +162,7 @@ public interface Browser extends FindableWebContext {
             OutputStream fileOut = Files.newOutputStream(path);
             takeScreenshot(fileOut);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DarcyException("Could not take screenshot", e);
         }
     }
 
