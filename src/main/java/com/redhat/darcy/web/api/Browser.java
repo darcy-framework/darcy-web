@@ -146,12 +146,17 @@ public interface Browser extends FindableWebContext {
 
     /**
      * Takes a screenshot.
+     *
+     * Implementations should handle closing the {@link OutputStream}.
      * @param outputStream The {@link OutputStream} to write the bytes to.
      */
     void takeScreenshot(OutputStream outputStream);
 
     /**
      * Takes a screenshot and writes it to a file.
+     *
+     * Any nonexistent directories included in the {@link Path} will be created.
+     * An exception will not be thrown if the directories already exist.
      * @param path The {@link Path} of the desired file destination.
      */
     default void takeScreenshot(Path path) {
