@@ -19,10 +19,14 @@
 
 package com.redhat.darcy.web.api;
 
+import com.redhat.darcy.ui.DarcyException;
 import com.redhat.darcy.ui.api.View;
 import com.redhat.synq.Event;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -140,7 +144,36 @@ public interface Browser extends FindableWebContext {
 
     void closeAll();
 
-    File takeScreenshot();
+    /**
+     * Takes a screenshot as bytes and writes to the provided {@link OutputStream}.
+     * Consumers should consult the implementation to see what image format the screenshot
+     * is written as.
+     * <p>
+     * Implementations should handle closing the {@link OutputStream}.
+     */
+    void takeScreenshot(OutputStream outputStream);
+
+    /**
+     * Takes a screenshot and writes it to the provided {@link Path}. To determine
+     * what file extension to use in the provided {@link Path}, consumers should look
+     * to the documentation for the {@link #takeScreenshot(OutputStream)} implementation
+     * being used.
+     * <p>
+     * Any nonexistent directories included in the {@link Path} will be created.
+     * An exception will not be thrown if the directories already exist.
+     * @param path The {@link Path} of the desired file destination.
+     */
+    default void takeScreenshot(Path path) {
+        try {
+            if (path.getParent() != null) {
+                Files.createDirectories(path.getParent());
+            }
+            OutputStream fileOut = Files.newOutputStream(path);
+            takeScreenshot(fileOut);
+        } catch (IOException e) {
+            throw new DarcyException("Could not take screenshot", e);
+        }
+    }
 
     @Override
     WebSelection find();
