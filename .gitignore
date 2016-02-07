@@ -4,3 +4,5 @@
 .settings/
 bin/
 *.iml
+*.releaseBackup
+release.properties
