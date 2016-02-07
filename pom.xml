@@ -10,7 +10,7 @@
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Extension to darcy that expands the DSL to support interaction with browsers and web applications.</description>
-    <url>https://github.com/darcy-web/darcy</url>
+    <url>https://github.com/darcy-framework/darcy-web</url>
 
     <properties>
         <version.synq>0.1.2-SNAPSHOT</version.synq>
