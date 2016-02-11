@@ -1,5 +1,7 @@
 package com.redhat.darcy.web.matchers;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -17,8 +19,8 @@ import java.util.List;
 @RunWith(JUnit4.class)
 public class HasClassTest {
     @Test
-    public void shouldMatchClass() {
-        HasClass<HtmlElement> matcher = new HasClass<>("clazz");
+    public void shouldMatchFullClass() {
+        HasClass<HtmlElement> matcher = new HasClass<>(equalTo("clazz"));
         HtmlElement mockElement = mock(HtmlElement.class);
 
         List<String> classes = new ArrayList<>();
@@ -29,8 +31,20 @@ public class HasClassTest {
     }
 
     @Test
-    public void shouldNotMatchClass() {
-        HasClass<HtmlElement> matcher = new HasClass<>("missing");
+    public void shouldMatchPartialClass() {
+        HasClass<HtmlElement> matcher = new HasClass<>(containsString("cla"));
+        HtmlElement mockElement = mock(HtmlElement.class);
+
+        List<String> classes = new ArrayList<>();
+        classes.add("clazz");
+        when(mockElement.getClasses()).thenReturn(classes);
+
+        assertTrue(matcher.matches(mockElement));
+    }
+
+    @Test
+    public void shouldNotMatchMissingClass() {
+        HasClass<HtmlElement> matcher = new HasClass<>(containsString("missing"));
         HtmlElement mockElement = mock(HtmlElement.class);
 
         List<String> classes = new ArrayList<>();
