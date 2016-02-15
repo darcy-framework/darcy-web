@@ -4,9 +4,9 @@ import com.redhat.darcy.web.api.elements.HtmlElement;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class HasClass<T extends HtmlElement> extends TypeSafeMatcher<T> {
+public class HasClass<T extends HtmlElement> extends TypeSafeDiagnosingMatcher<T> {
     private Matcher<? super String> matcher;
 
     public HasClass(Matcher<? super String> matcher) {
@@ -14,19 +14,22 @@ public class HasClass<T extends HtmlElement> extends TypeSafeMatcher<T> {
     }
 
     @Override
-    protected boolean matchesSafely(T t) {
+    public void describeTo(Description description) {
+        description.appendText("an element that has the class ");
+        matcher.describeTo(description);
+    }
+
+    @Override
+    protected boolean matchesSafely(T t, Description description) {
         for (String clazz : t.getClasses()) {
             if (matcher.matches(clazz)) {
                 return true;
             }
         }
 
-        return false;
-    }
+        description.appendText("could not find a matching class in ")
+                .appendValue(t.getClasses());
 
-    @Override
-    public void describeTo(Description description) {
-        description.appendText("an Element that has the class");
-        matcher.describeTo(description);
+        return false;
     }
 }
